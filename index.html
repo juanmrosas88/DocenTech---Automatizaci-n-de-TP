@@ -146,9 +146,21 @@
                         <div class="input-group">
                             <div class="label-wrapper">
                                 <label for="appsScriptUrl">URL de tu Aplicación Web de Google Apps Script</label>
-                                <span class="tooltip-trigger" data-tooltip="Pega la URL de implementación web de Google Apps Script. Si la dejas en blanco, la app funcionará en 'Modo Simulación local' para que veas cómo trabaja.">?</span>
+                                <span class="tooltip-trigger" data-tooltip="Pega la URL de implementación de la Aplicación Web de Google Apps Script. Si la dejas en blanco, la app funcionará en el 'Modo Simulación local' para pruebas.">?</span>
                             </div>
                             <input type="url" id="appsScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                        </div>
+
+                        <div class="backend-instructions">
+                            <p class="instructions-title">🔑 ¿De dónde obtengo esta URL?</p>
+                            <ol class="instructions-list">
+                                <li>Ve a <a href="https://script.google.com" target="_blank" rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con tu correo de Gmail.</li>
+                                <li>Crea un <strong>Nuevo Proyecto</strong> y pega el código que se encuentra en el archivo <code>Code.gs</code>.</li>
+                                <li>Haz clic en el botón azul <strong>Implementar (Deploy)</strong> &gt; <strong>Nueva implementación</strong> (esquina superior derecha).</li>
+                                <li>Selecciona tipo <strong>Aplicación Web</strong>, configúrala como <em>"Ejecutar como: Yo"</em> y <em>"Quién tiene acceso: Cualquier persona"</em>, y haz clic en <strong>Implementar</strong>.</li>
+                                <li><strong>Copia la URL larga generada</strong> (que empieza con <code>https://script.google.com/...</code>) y pégala en el campo de arriba.</li>
+                            </ol>
+                            <p class="instructions-note">💡 <em>¿Primera vez? Haz clic en el botón <strong>"Centro de Ayuda"</strong> (arriba a la derecha) para abrir la guía paso a paso con explicaciones detalladas y capturas de pantalla simuladas.</em></p>
                         </div>
 
                         <div class="form-actions">
@@ -253,6 +265,41 @@
                 </div>
             </section>
         </main>
+
+        <!-- Descripción e Instrucciones Rápidas a Pie de Página -->
+        <section class="about-section card">
+            <div class="about-header">
+                <span class="about-icon">💡</span>
+                <h2>¿Qué es DocenTech Workspace y cómo se usa?</h2>
+            </div>
+            <div class="about-body">
+                <p class="about-intro">
+                    <strong>DocenTech Workspace</strong> es una plataforma web 100% gratuita y privada que automatiza el proceso de recepción, organización y corrección preliminar de Trabajos Prácticos (TP). Su objetivo es liberar a los docentes de horas de administración manual utilizando la potencia de la Inteligencia Artificial sin costos adicionales.
+                </p>
+                <div class="about-steps-grid">
+                    <div class="about-step-card">
+                        <div class="step-num-badge">1</div>
+                        <h3>Pídeles el Asunto</h3>
+                        <p>Tus alumnos te envían sus trabajos por correo compartiendo su enlace de Google Doc. Solo deben escribir en el asunto la frase exacta de tu materia (ej: <code>TP1 Historia</code>).</p>
+                    </div>
+                    
+                    <div class="about-step-card">
+                        <div class="step-num-badge">2</div>
+                        <h3>Configura y Ejecuta</h3>
+                        <p>Escribe en el formulario tu correo de recepción, el asunto esperado, tu API Key gratuita de Gemini y el enlace de Apps Script. Luego, haz clic en <strong>Iniciar Procesamiento</strong>.</p>
+                    </div>
+                    
+                    <div class="about-step-card">
+                        <div class="step-num-badge">3</div>
+                        <h3>Revisa los Reportes</h3>
+                        <p>El sistema generará automáticamente en tu Google Drive el <strong>Libro de Trabajos Consolidados</strong> y un completo **Reporte Pedagógico de IA** detallando errores comunes de tu grupo.</p>
+                    </div>
+                </div>
+                <div class="about-footer-note">
+                    <p>🔒 <strong>Privacidad del Estudiante:</strong> Los datos se procesan local y directamente en tu cuenta personal de Google (Gmail, Drive y Gemini API). Nada viaja a servidores externos, garantizando el cumplimiento de las normativas de datos educativos.</p>
+                </div>
+            </div>
+        </section>
 
         <footer class="app-footer-bar">
             <p>&copy; 2026 DocenTech. Desarrollado con ❤️ para empoderar la educación pública y privada con IA sin costos.</p>

@@ -182,7 +182,7 @@ body {
     padding: 2rem;
     box-shadow: var(--shadow-soft);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
-    overflow: hidden;
+    overflow: visible; /* Changed to visible to prevent tooltip clipping */
 }
 
 .card:hover {
@@ -328,22 +328,22 @@ body {
     bottom: 140%;
     left: 50%;
     transform: translateX(-50%) scale(0.9);
-    background: #0f172a;
-    border: 1px solid var(--border-color);
+    background: #111827; /* Opaque solid dark background */
+    border: 1px solid var(--primary); /* Indigo border to stand out */
     color: var(--text-primary);
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1.15rem;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 400;
-    width: 250px;
-    text-align: center;
-    box-shadow: var(--shadow-soft);
-    z-index: 100;
+    width: 280px;
+    text-align: left; /* Align text left for easier reading of descriptions */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 0 15px rgba(99, 102, 241, 0.2); /* Deep shadow with indigo glow */
+    z-index: 99999; /* Float over absolutely everything */
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(8px);
-    line-height: 1.4;
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(12px);
+    line-height: 1.5;
 }
 
 [data-tooltip]::after {
@@ -354,11 +354,11 @@ body {
     transform: translateX(-50%);
     border-width: 6px;
     border-style: solid;
-    border-color: #0f172a transparent transparent transparent;
-    z-index: 100;
+    border-color: var(--primary) transparent transparent transparent; /* Matches indigo border */
+    z-index: 99999;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-tooltip]:hover::before {
