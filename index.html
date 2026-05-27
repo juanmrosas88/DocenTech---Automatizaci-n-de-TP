@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocenTech - Automatización de TP</title>
+    <!-- Google Fonts for premium tech typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Top Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 id="appTitle">DocenTech <span>Workspace</span></h1>
+                <p id="appDescription">Recepción, consolidación y análisis automatizado de Trabajos Prácticos con IA</p>
+            </div>
+            <div class="header-right">
+                <div class="status-badge" id="statusBadge">
+                    <span class="status-indicator pulses"></span>
+                    <span id="statusText">Listo para procesar</span>
+                </div>
+                <button type="button" id="openHelpBtn" class="btn-secondary" aria-label="Abrir guía de ayuda">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-help"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Centro de Ayuda
+                </button>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <form id="configForm">
+                <div class="grid-container">
+                    <!-- Configuración Básica -->
+                    <div class="card card-config">
+                        <div class="card-header">
+                            <span class="card-icon">📬</span>
+                            <h2>Configuración de Correo & Entrega</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="teacherEmail">Tu Email (Receptor)</label>
+                                    <span class="tooltip-trigger" data-tooltip="Ingresa el correo electrónico donde recibes los trabajos prácticos de tus estudiantes. Debe coincidir con la cuenta del script de Google.">?</span>
+                                </div>
+                                <input type="email" id="teacherEmail" required placeholder="profesor@escuela.com">
+                            </div>
+                            
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="subject">Asunto esperado del Email</label>
+                                    <span class="tooltip-trigger" data-tooltip="La frase o palabra exacta que tus alumnos deben colocar en el asunto del email para identificar la entrega. Ej: 'TP1 Historia'">?</span>
+                                </div>
+                                <input type="text" id="subject" required placeholder="Ej: TP1 Historia">
+                            </div>
+                            
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="deadline">Fecha límite de entrega</label>
+                                    <span class="tooltip-trigger" data-tooltip="Fecha final establecida para la entrega. Los correos recibidos después de este día serán marcados automáticamente como 'Fuera de Término'.">?</span>
+                                </div>
+                                <input type="date" id="deadline" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración del Cerebro IA y Filtros -->
+                    <div class="card card-ai">
+                        <div class="card-header">
+                            <span class="card-icon">🧠</span>
+                            <h2>Cerebro IA (Gemini) & Automatización</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="geminiKey">Gemini API Key (AI Studio)</label>
+                                    <span class="tooltip-trigger" data-tooltip="Llave secreta gratuita de Google AI Studio que alimenta el análisis pedagógico de la IA. Nunca se comparte en la red, es 100% privada.">?</span>
+                                </div>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="geminiKey" placeholder="Pega tu API Key de Gemini aquí">
+                                    <button type="button" id="toggleKeyVisibility" class="btn-toggle-visibility" aria-label="Mostrar u ocultar clave">👁️</button>
+                                </div>
+                                <small class="input-help-text">
+                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Obtener llave de API gratuita aquí ↗</a>
+                                </small>
+                            </div>
+
+                            <div class="toggle-container">
+                                <div class="toggle-group">
+                                    <label class="switch">
+                                        <input type="checkbox" id="allowDocs" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="toggle-info">
+                                        <span class="toggle-title">Permitir adjuntos Word / PDF</span>
+                                        <span class="toggle-desc">Si se apaga, el sistema solo recopilará enlaces compartidos a Google Docs.</span>
+                                    </div>
+                                </div>
+
+                                <div class="toggle-group">
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoFeedback" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="toggle-info">
+                                        <span class="toggle-title">Generar Feedback con Gemini IA</span>
+                                        <span class="toggle-desc">Crea un comentario breve de retroalimentación pedagógica individualizado.</span>
+                                    </div>
+                                </div>
+
+                                <div class="toggle-group">
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoEmail" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="toggle-info">
+                                        <span class="toggle-title">Enviar email automático al alumno</span>
+                                        <span class="toggle-desc">Envía el feedback preliminar por correo apenas se procese el trabajo.</span>
+                                    </div>
+                                </div>
+
+                                <div class="toggle-group">
+                                    <label class="switch">
+                                        <input type="checkbox" id="teacherReport" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="toggle-info">
+                                        <span class="toggle-title">Generar Reporte Docente Completo</span>
+                                        <span class="toggle-desc">Crea un documento de análisis conceptual grupal en tu Google Drive.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración Avanzada / URL Backend -->
+                <div class="card card-backend">
+                    <div class="card-header">
+                        <span class="card-icon">⚡</span>
+                        <h2>Conexión con Google Apps Script</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <div class="label-wrapper">
+                                <label for="appsScriptUrl">URL de tu Aplicación Web de Google Apps Script</label>
+                                <span class="tooltip-trigger" data-tooltip="Pega la URL de implementación web de Google Apps Script. Si la dejas en blanco, la app funcionará en 'Modo Simulación local' para que veas cómo trabaja.">?</span>
+                            </div>
+                            <input type="url" id="appsScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" id="startBtn" class="btn-primary">
+                                <span class="btn-label">Iniciar Procesamiento</span>
+                                <span class="btn-glow"></span>
+                            </button>
+                            <button type="button" id="simulationBtn" class="btn-simulation">
+                                Probar con Simulación Local (¡Gratis!)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Dashboard de Estadísticas de Uso Local -->
+            <section class="metrics-section" id="metricsSection">
+                <div class="section-title-wrapper">
+                    <span class="section-icon">📈</span>
+                    <h2>Tu Historial & Estadísticas de Uso Local</h2>
+                    <span class="badge-privacy">100% Privado y Local</span>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-icon">⚙️</span>
+                        <div class="metric-data">
+                            <h3 class="metric-value" id="metricExecutions">0</h3>
+                            <p class="metric-label">Ejecuciones Totales</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-icon">📝</span>
+                        <div class="metric-data">
+                            <h3 class="metric-value" id="metricProcessed">0</h3>
+                            <p class="metric-label">Trabajos Procesados</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-icon">✉️</span>
+                        <div class="metric-data">
+                            <h3 class="metric-value" id="metricEmails">0</h3>
+                            <p class="metric-label">Emails Enviados</p>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-icon">⏱️</span>
+                        <div class="metric-data">
+                            <h3 class="metric-value" id="metricPunctuality">0%</h3>
+                            <p class="metric-label">Entregas a Tiempo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-card card">
+                    <div class="history-header">
+                        <h3>Registro de Actividades Recientes</h3>
+                        <button type="button" id="clearHistoryBtn" class="btn-tertiary">Borrar Historial</button>
+                    </div>
+                    <div class="history-list-wrapper">
+                        <table class="history-table" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Asunto de Clase</th>
+                                    <th>Modo</th>
+                                    <th>Entregas</th>
+                                    <th>Documentos Generados</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyList">
+                                <tr id="noHistoryRow">
+                                    <td colspan="6" class="text-center text-muted">Aún no hay registros de ejecuciones. Inicia un procesamiento arriba o haz una simulación.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progreso y Consola de Logs -->
+            <section id="executionConsole" class="card console-card hidden">
+                <div class="console-header">
+                    <div class="console-title-group">
+                        <div class="spinner-small" id="consoleSpinner"></div>
+                        <h2>Consola de Ejecución en Tiempo Real</h2>
+                    </div>
+                    <button type="button" id="closeConsoleBtn" class="btn-close-console">Cerrar Consola</button>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-meta">
+                        <span id="progressPercentage">0%</span>
+                        <span id="progressStepName">Conectando...</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                <div class="logs" id="logsContainer">
+                    <p class="log-line system">>> Sistema iniciado. Esperando configuración...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer-bar">
+            <p>&copy; 2026 DocenTech. Desarrollado con ❤️ para empoderar la educación pública y privada con IA sin costos.</p>
+        </footer>
+    </div>
+
+    <!-- Centro de Ayuda Deslizable (Heurística #10 de Nielsen) -->
+    <div class="help-overlay" id="helpOverlay"></div>
+    <aside class="help-drawer" id="helpDrawer">
+        <div class="drawer-header">
+            <h2>📖 Centro de Ayuda y Guía de Configuración</h2>
+            <button type="button" id="closeHelpBtn" class="btn-close-drawer" aria-label="Cerrar guía de ayuda">&times;</button>
+        </div>
+        <div class="drawer-content">
+            <p class="intro">¡Hola, Docente! Esta herramienta está diseñada para ahorrarte horas de trabajo administrativo y de corrección sin costo alguno. Aquí tienes la guía completa.</p>
+            
+            <section class="drawer-section">
+                <h3>🚀 ¿Cómo funciona DocenTech?</h3>
+                <ol class="step-list">
+                    <li>
+                        <strong>Tus alumnos envían emails:</strong> Le pides a tus alumnos que envíen sus trabajos prácticos a tu correo y que el asunto del correo sea exactamente un código que tú elijas (ej: <code>TP1 Historia</code>). Los alumnos pueden incluir un link a su Google Doc en el email o adjuntar un archivo.
+                    </li>
+                    <li>
+                        <strong>El sistema procesa Gmail:</strong> DocenTech buscará todos los correos en tu Gmail que tengan ese asunto.
+                    </li>
+                    <li>
+                        <strong>Consolidación e IA:</strong> Copiará el texto de los trabajos, creará un <strong>"Libro de Trabajos"</strong> en tu Google Drive y le pedirá a la IA de <strong>Gemini 1.5 Flash</strong> que analice la clase para darte un reporte detallado de errores y conceptos más repetidos.
+                    </li>
+                    <li>
+                        <strong>Feedback y Email Directo:</strong> Si lo activas, la IA redactará una retroalimentación de 3 líneas para el alumno y le enviará un correo automáticamente con su feedback preliminar.
+                    </li>
+                </ol>
+            </section>
+
+            <section class="drawer-section">
+                <h3>💎 Paso 1: Obtener tu API Key gratuita de Gemini (1 Minuto)</h3>
+                <p>Para usar la inteligencia artificial sin pagar a intermediarios, puedes usar tu propio acceso gratuito directo de Google:</p>
+                <div class="action-card">
+                    <ol>
+                        <li>Haz clic en este enlace para abrir <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener"><strong>Google AI Studio ↗</strong></a> (inicia sesión con tu cuenta de Google si es necesario).</li>
+                        <li>Haz clic en el botón azul que dice <strong>"Create API Key"</strong>.</li>
+                        <li>Selecciona tu proyecto o crea uno nuevo y haz clic en <strong>"Create API Key in existing project"</strong>.</li>
+                        <li>Copia la clave larga generada (ej: <code>AIzaSy...</code>) y pégala en el campo <strong>Gemini API Key</strong> de la web.</li>
+                    </ol>
+                    <p class="tip">💡 <strong>Privacidad</strong>: Esta clave no se almacena en ningún servidor. Se utiliza directamente en el script de tu propia cuenta de Google.</p>
+                </div>
+            </section>
+
+            <section class="drawer-section">
+                <h3>🛠️ Paso 2: Configurar Google Apps Script (2 Minutos)</h3>
+                <p>Google Apps Script es una plataforma gratuita de Google que permite ejecutar códigos para conectar tus correos con Google Docs. Sigue estos pasos:</p>
+                <div class="action-card">
+                    <ol>
+                        <li>Ve a <a href="https://script.google.com/home" target="_blank" rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con el mismo correo donde recibirás los TPs.</li>
+                        <li>Haz clic en el botón <strong>"Nuevo Proyecto"</strong> en la parte superior izquierda.</li>
+                        <li>Nombra el proyecto como <code>Backend DocenTech</code>.</li>
+                        <li>En el panel central, borra todo el código por defecto y pega el contenido del archivo <strong>Code.gs</strong> (puedes descargarlo o copiarlo desde tu carpeta de instalación).</li>
+                        <li>Guarda el proyecto haciendo clic en el icono de disquete 💾.</li>
+                        <li>Haz clic en <strong>"Implementar" (Deploy)</strong> &gt; <strong>"Nueva implementación"</strong> en la esquina superior derecha.</li>
+                        <li>Selecciona el tipo de implementación haciendo clic en el engranaje ⚙️ y elige <strong>"Aplicación Web" (Web App)</strong>.</li>
+                        <li>Configura los campos:
+                            <ul>
+                                <li><strong>Descripción:</strong> <code>v1</code></li>
+                                <li><strong>Ejecutar como:</strong> <code>Yo (tu-correo@gmail.com)</code> <span class="badge-critical">Importante</span></li>
+                                <li><strong>Quién tiene acceso:</strong> <code>Cualquier persona</code> (Esto es para que el formulario web pueda comunicarse con el script)</li>
+                            </ul>
+                        </li>
+                        <li>Haz clic en <strong>"Implementar"</strong>.</li>
+                        <li>Google te solicitará <strong>"Autorizar acceso"</strong>. Haz clic en el botón, selecciona tu cuenta, haz clic en <strong>"Avanzado"</strong> y luego en <strong>"Ir a Backend DocenTech (no seguro)"</strong>. Otorga los permisos. (Esto es totalmente normal e indispensable para que el script pueda buscar en tu Gmail y crear documentos en tu Drive).</li>
+                        <li>Copia la <strong>URL de la Aplicación Web</strong> que te da Google al final (ej: <code>https://script.google.com/macros/s/.../exec</code>).</li>
+                        <li>Pega esa URL en el campo correspondiente en el formulario de la aplicación. ¡Listo!</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="drawer-section">
+                <h3>❓ Preguntas Frecuentes & Cuotas</h3>
+                <div class="faq-item">
+                    <h4>¿De verdad es 100% gratis?</h4>
+                    <p>Sí, porque utilizas la infraestructura gratuita propia de tu cuenta personal de Google. No hay servidores intermediarios y no hay cargos ocultos.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>¿Qué pasa con la seguridad de mis datos y los de mis alumnos?</h4>
+                    <p>Los datos nunca pasan por terceros. El flujo va desde tu navegador hacia el servidor de Google Apps Script y Gemini API. Todo queda dentro de tu ecosistema personal de Google.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>¿Cuántos trabajos puedo procesar?</h4>
+                    <p>En el nivel gratuito de Gmail puedes procesar hasta 100 correos al día (enviando feedback a alumnos automáticamente). Si utilizas un correo institucional educativo (@escuela.edu), la cuota se expande a 2,000 correos diarios sin costo adicional.</p>
+                </div>
+            </section>
+        </div>
+    </aside>
+
+    <script src="app.js"></script>
+</body>
+</html>
