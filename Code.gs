@@ -8,48 +8,40 @@
  * de Google Drive y conectarse con Gemini 1.5 Flash de forma gratuita.
  */
 
-/**
- * Función principal que procesa la petición HTTP POST enviada desde el frontend
- */
 function doPost(e) {
-  // CORS Header para permitir llamadas externas
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-  
   try {
-    // Validar contenido recibido
+    // 1. Validación estricta del payload de entrada
     if (!e || !e.postData || !e.postData.contents) {
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "error",
-        message: "No se recibieron datos en la petición."
-      }))
-      .setMimeType(ContentService.MimeType.JSON)
-      .setHeaders(corsHeaders);
+      return ContentService.createTextOutput(
+        JSON.stringify({
+          status: "error",
+          message: "No se recibieron datos en la petición."
+        })
+      ).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // 2. Parsing seguro de la configuración enviada desde el Frontend
     const config = JSON.parse(e.postData.contents);
     
-    // Ejecutar procesamiento principal
+    // 3. Orquestación del Core del Negocio (Procesamiento de los TPs)
     const result = processAssignments(config);
     
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "success",
-      data: result
-    }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeaders(corsHeaders);
-    
+    // 4. Retorno exitoso estandarizado
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        status: "success",
+        data: result
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
+
   } catch (error) {
-    Logger.log("Error en doPost: " + error.toString());
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "error",
-      message: "Error interno del servidor de Google: " + error.toString()
-    }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeaders(corsHeaders);
+    // 5. Captura global de excepciones (Graceful Degradation)
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        status: "error",
+        message: error.toString()
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
@@ -194,52 +186,41 @@ function processAssignments(config) {
     }
   });
 
-  // 3. Generar el Reporte Docente IA Completo
+  // ==========================================
+  // BLOQUE CRÍTICO: GENERACIÓN DEL REPORTE CON IA (ROBUSTO)
+  // ==========================================
   let reporteUrl = "";
-  if (config.teacherReport && config.geminiKey && processedCount > 0 && allTextForReport !== "") {
+  let reporteErrorLog = null;
+  
+  if (config.teacherReport && config.geminiKey) {
     try {
-      const promptReporte = `
-        Actúa como un experto analista pedagógico de educación. Analiza los siguientes textos correspondientes a los trabajos prácticos entregados por el grupo de alumnos para la materia/tema "${config.subject}".
-        
-        TRABAJOS DEL GRUPO:
-        ${allTextForReport.substring(0, 25000)}
-        
-        Genera un reporte estructurado y profesional que ayude al docente a entender el desempeño del grupo. Tu respuesta debe redactarse en español y contener las siguientes secciones estructuradas con títulos claros:
-        
-        1. RESUMEN PEDAGÓGICO GENERAL: Breve análisis cualitativo del nivel de comprensión general del grupo.
-        2. ANÁLISIS DE CONCEPTOS COMPRENDIDOS: Identifica las ideas fuertes y bien asimiladas por la mayoría de los estudiantes.
-        3. DIFICULTADES Y ERRORES FRECUENTES: Señala las confusiones conceptuales, vacíos o malentendidos recurrentes en los trabajos.
-        4. RECOMENDACIONES Y ACCIONABLES PARA LA CLASE: Brinda 3 sugerencias específicas sobre qué temas debería reforzar el docente en la próxima clase o actividades futuras.
-        5. LISTADO CONCEPTUAL DE COMPRENSIÓN: Un breve ranking de los temas con mayor nivel de acierto frente a los de mayor confusión.
-        
-        Utiliza un lenguaje profesional, constructivo y claro.
-      `;
+      if (!allTextForReport || allTextForReport.trim() === "") {
+        throw new Error("No se extrajo texto válido de los trabajos de los alumnos para analizar.");
+      }
+
+      // 1. Construir prompt con el tag '-latest' mapeado arriba
+      const promptPedagogico = "Actúa como un asesor pedagógico experto. Analiza el siguiente documento que consolida los Trabajos Prácticos de los alumnos bajo el asunto '" + config.subject + "'. Genera un reporte ejecutivo para el docente que incluya: 1- Errores conceptuales recurrentes encontrados, 2- Alumnos que requieren apoyo urgente, 3- Sugerencias metodológicas para la próxima clase.\n\nAquí está el contenido consolidado:\n" + allTextForReport;
       
-      const analisisIA = llamarGemini(config.geminiKey, promptReporte);
+      // 2. Llamada a la API de Gemini (Usa el endpoint corregido con -latest)
+      const analisisIA = llamarGemini(config.geminiKey, promptPedagogico);
       
-      // Crear el documento de Reporte en Drive
-      const reporteDoc = DocumentApp.create(`Reporte IA Analítico - ${config.subject}`);
-      const reporteBody = reporteDoc.getBody();
-      reporteBody.clear();
+      // 3. Crear el documento físico del reporte exitoso
+      const docReporte = DocumentApp.create("Reporte Analítico IA - " + config.subject);
+      docReporte.getBody().setText(analisisIA);
+      docReporte.saveAndClose();
       
-      reporteBody.appendParagraph(`Reporte Pedagógico de IA: ${config.subject}`).setHeading(DocumentApp.ParagraphHeading.HEADING1);
-      reporteBody.appendParagraph(`Generado automáticamente por DocenTech el ${new Date().toLocaleDateString('es-ES')}`).setItalic(true);
-      reporteBody.appendParagraph(`Este reporte consolida el análisis cualitativo del grupo de estudiantes basado en ${processedCount} trabajos procesados exitosamente.`).setBold(true);
-      reporteBody.appendHorizontalRule();
+      reporteUrl = docReporte.getUrl();
       
-      reporteBody.appendParagraph(analisisIA);
-      
-      reporteUrl = reporteDoc.getUrl();
-    } catch (reporteError) {
-      Logger.log("Error generando reporte general con Gemini: " + reporteError.toString());
+    } catch (errorIA) {
+      reporteErrorLog = errorIA.toString();
     }
   }
 
-  // Devolver resultados consolidados
   return {
     processedCount: processedCount,
     libroUrl: libroDoc.getUrl(),
-    reporteUrl: reporteUrl
+    reporteUrl: reporteUrl,
+    reporteError: reporteErrorLog 
   };
 }
 
@@ -247,9 +228,7 @@ function processAssignments(config) {
  * Conexión directa y simplificada con la API oficial de Gemini 1.5 Flash
  */
 function llamarGemini(apiKey, prompt) {
-  // Endpoint de Gemini 1.5 Flash
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
   // Estructura del cuerpo de petición requerido por la API de Google
   const payload = {
     contents: [{

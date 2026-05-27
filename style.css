@@ -743,7 +743,9 @@ input:checked+.slider:before {
 
 /* Real-Time Terminal & Execution Logs */
 .console-card {
-    margin-top: 2.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    scroll-margin-top: 1rem;
     background-color: var(--bg-console) !important;
     border: 1px solid rgba(56, 189, 248, 0.2) !important;
     border-radius: 12px;
@@ -853,6 +855,14 @@ input:checked+.slider:before {
 
 .log-line.ai {
     color: #c084fc;
+}
+
+.log-line.warning {
+    color: #fbbf24;
+}
+
+.log-line.info {
+    color: #7dd3fc;
 }
 
 /* Help Drawer - Nielsen Heuristic #10 */

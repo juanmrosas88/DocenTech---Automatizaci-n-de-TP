@@ -207,6 +207,29 @@
                 </div>
             </form>
 
+            <!-- Progreso y Consola (antes del historial: visible al iniciar procesamiento) -->
+            <section id="executionConsole" class="card console-card hidden">
+                <div class="console-header">
+                    <div class="console-title-group">
+                        <div class="spinner-small" id="consoleSpinner"></div>
+                        <h2>Consola de Ejecución en Tiempo Real</h2>
+                    </div>
+                    <button type="button" id="closeConsoleBtn" class="btn-close-console">Cerrar Consola</button>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-meta">
+                        <span id="progressPercentage">0%</span>
+                        <span id="progressStepName">Conectando...</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+                <div class="logs" id="logsContainer">
+                    <p class="log-line system">>> Sistema iniciado. Esperando configuración...</p>
+                </div>
+            </section>
+
             <!-- Dashboard de Estadísticas de Uso Local -->
             <section class="metrics-section" id="metricsSection">
                 <div class="section-title-wrapper">
@@ -271,29 +294,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </section>
-
-            <!-- Progreso y Consola de Logs -->
-            <section id="executionConsole" class="card console-card hidden">
-                <div class="console-header">
-                    <div class="console-title-group">
-                        <div class="spinner-small" id="consoleSpinner"></div>
-                        <h2>Consola de Ejecución en Tiempo Real</h2>
-                    </div>
-                    <button type="button" id="closeConsoleBtn" class="btn-close-console">Cerrar Consola</button>
-                </div>
-                <div class="progress-wrapper">
-                    <div class="progress-meta">
-                        <span id="progressPercentage">0%</span>
-                        <span id="progressStepName">Conectando...</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
-                <div class="logs" id="logsContainer">
-                    <p class="log-line system">>> Sistema iniciado. Esperando configuración...</p>
                 </div>
             </section>
         </main>

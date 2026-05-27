@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 aLibro.innerText = '📁 Libro de TPs';
                 linksContainer.appendChild(aLibro);
 
-                if (run.reporteUrl) {
+                if (isHttpUrl(run.reporteUrl)) {
                     const aReporte = document.createElement('a');
                     aReporte.href = run.reporteUrl;
                     aReporte.target = '_blank';
@@ -415,15 +415,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 addLog(">> Conexión finalizada con éxito.", "success");
                 addLog(`Trabajos prácticos procesados con éxito: ${result.data.processedCount}`, "success");
                 addLog(`Enlace al Libro de Trabajos Consolidados: ${result.data.libroUrl}`, "success");
+                logReporteResult(result.data, config);
 
-                if (config.teacherReport) {
-                    addLog(`Enlace al Reporte Analítico del Docente (IA): ${result.data.reporteUrl}`, "success");
-                }
-
-                // Gather simple metadata for statistics history
                 const emailsSentCount = config.autoEmail && config.autoFeedback ? result.data.processedCount : 0;
 
-                // Save execution stats to dashboard history
                 saveHistoryRecord({
                     timestamp: new Date().getTime(),
                     subject: config.subject,
@@ -431,7 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     processedCount: result.data.processedCount,
                     emailsSent: emailsSentCount,
                     libroUrl: result.data.libroUrl,
-                    reporteUrl: result.data.reporteUrl || '',
+                    reporteUrl: isHttpUrl(result.data.reporteUrl) ? result.data.reporteUrl : '',
+                    reporteError: result.data.reporteError || '',
                     status: 'Éxito',
                     deliveries: Array.from({ length: result.data.processedCount }, () => ({ punctual: true })) // assume punctual for simple stats
                 });
@@ -628,6 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             consoleUI.classList.remove('hidden');
             consoleSpinner.style.display = "block";
+            scrollToConsole();
 
             // Reset Progress UI
             progressBar.style.width = "0%";
@@ -648,6 +645,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearLogs() {
         logsContainer.innerHTML = '';
+    }
+
+    function isHttpUrl(url) {
+        return typeof url === 'string' && url.startsWith('http');
+    }
+
+    function scrollToConsole() {
+        requestAnimationFrame(() => {
+            consoleUI.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    function logReporteResult(data, config) {
+        if (!config.teacherReport) return;
+
+        if (data.reporteError) {
+            addLog('❌ El reporte analítico pedagógico con IA no pudo ser generado.', 'error');
+            addLog(`⚠️ Detalle técnico del fallo: "${data.reporteError}"`, 'warning');
+            addLog('📧 Por favor, ponte en contacto con soporte técnico escribiendo a profejuanrosas@gmail.com adjuntando el detalle anterior.', 'info');
+        } else if (isHttpUrl(data.reporteUrl)) {
+            addLog(`Enlace al Reporte Analítico del Docente (IA): ${data.reporteUrl}`, 'success');
+        } else if (!config.geminiKey || !config.geminiKey.trim()) {
+            addLog('ℹ️ El reporte con IA no se generó: configurá tu API Key de Gemini en el formulario.', 'info');
+        } else {
+            addLog('ℹ️ No se generó reporte de IA en esta ejecución (sin texto válido para analizar o sin entregas).', 'warning');
+        }
     }
 
     function addLog(message, type = "normal") {
