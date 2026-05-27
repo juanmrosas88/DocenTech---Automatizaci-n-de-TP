@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
     <!-- Google Fonts for premium tech typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Main Top Header -->
@@ -24,7 +28,12 @@
                     <span id="statusText">Listo para procesar</span>
                 </div>
                 <button type="button" id="openHelpBtn" class="btn-secondary" aria-label="Abrir guía de ayuda">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-help"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="icon-help">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                     Centro de Ayuda
                 </button>
             </div>
@@ -43,23 +52,26 @@
                             <div class="input-group">
                                 <div class="label-wrapper">
                                     <label for="teacherEmail">Tu Email (Receptor)</label>
-                                    <span class="tooltip-trigger" data-tooltip="Ingresa el correo electrónico donde recibes los trabajos prácticos de tus estudiantes. Debe coincidir con la cuenta del script de Google.">?</span>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="Ingresa el correo electrónico donde recibes los trabajos prácticos de tus estudiantes. Debe coincidir con la cuenta del script de Google.">?</span>
                                 </div>
                                 <input type="email" id="teacherEmail" required placeholder="profesor@escuela.com">
                             </div>
-                            
+
                             <div class="input-group">
                                 <div class="label-wrapper">
                                     <label for="subject">Asunto esperado del Email</label>
-                                    <span class="tooltip-trigger" data-tooltip="La frase o palabra exacta que tus alumnos deben colocar en el asunto del email para identificar la entrega. Ej: 'TP1 Historia'">?</span>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="La frase o palabra exacta que tus alumnos deben colocar en el asunto del email para identificar la entrega. Ej: 'TP1 Historia'">?</span>
                                 </div>
                                 <input type="text" id="subject" required placeholder="Ej: TP1 Historia">
                             </div>
-                            
+
                             <div class="input-group">
                                 <div class="label-wrapper">
                                     <label for="deadline">Fecha límite de entrega</label>
-                                    <span class="tooltip-trigger" data-tooltip="Fecha final establecida para la entrega. Los correos recibidos después de este día serán marcados automáticamente como 'Fuera de Término'.">?</span>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="Fecha final establecida para la entrega. Los correos recibidos después de este día serán marcados automáticamente como 'Fuera de Término'.">?</span>
                                 </div>
                                 <input type="date" id="deadline" required>
                             </div>
@@ -76,14 +88,17 @@
                             <div class="input-group">
                                 <div class="label-wrapper">
                                     <label for="geminiKey">Gemini API Key (AI Studio)</label>
-                                    <span class="tooltip-trigger" data-tooltip="Llave secreta gratuita de Google AI Studio que alimenta el análisis pedagógico de la IA. Nunca se comparte en la red, es 100% privada.">?</span>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="Llave secreta gratuita de Google AI Studio que alimenta el análisis pedagógico de la IA. Nunca se comparte en la red, es 100% privada.">?</span>
                                 </div>
                                 <div class="password-input-wrapper">
                                     <input type="password" id="geminiKey" placeholder="Pega tu API Key de Gemini aquí">
-                                    <button type="button" id="toggleKeyVisibility" class="btn-toggle-visibility" aria-label="Mostrar u ocultar clave">👁️</button>
+                                    <button type="button" id="toggleKeyVisibility" class="btn-toggle-visibility"
+                                        aria-label="Mostrar u ocultar clave">👁️</button>
                                 </div>
                                 <small class="input-help-text">
-                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Obtener llave de API gratuita aquí ↗</a>
+                                    <a href="https://aistudio.google.com/app/apikey" target="_blank"
+                                        rel="noopener">Obtener llave de API gratuita aquí ↗</a>
                                 </small>
                             </div>
 
@@ -95,7 +110,8 @@
                                     </label>
                                     <div class="toggle-info">
                                         <span class="toggle-title">Permitir adjuntos Word / PDF</span>
-                                        <span class="toggle-desc">Si se apaga, el sistema solo recopilará enlaces compartidos a Google Docs.</span>
+                                        <span class="toggle-desc">Si se apaga, el sistema solo recopilará enlaces
+                                            compartidos a Google Docs.</span>
                                     </div>
                                 </div>
 
@@ -106,7 +122,8 @@
                                     </label>
                                     <div class="toggle-info">
                                         <span class="toggle-title">Generar Feedback con Gemini IA</span>
-                                        <span class="toggle-desc">Crea un comentario breve de retroalimentación pedagógica individualizado.</span>
+                                        <span class="toggle-desc">Crea un comentario breve de retroalimentación
+                                            pedagógica individualizado.</span>
                                     </div>
                                 </div>
 
@@ -117,7 +134,8 @@
                                     </label>
                                     <div class="toggle-info">
                                         <span class="toggle-title">Enviar email automático al alumno</span>
-                                        <span class="toggle-desc">Envía el feedback preliminar por correo apenas se procese el trabajo.</span>
+                                        <span class="toggle-desc">Envía el feedback preliminar por correo apenas se
+                                            procese el trabajo.</span>
                                     </div>
                                 </div>
 
@@ -128,7 +146,8 @@
                                     </label>
                                     <div class="toggle-info">
                                         <span class="toggle-title">Generar Reporte Docente Completo</span>
-                                        <span class="toggle-desc">Crea un documento de análisis conceptual grupal en tu Google Drive.</span>
+                                        <span class="toggle-desc">Crea un documento de análisis conceptual grupal en tu
+                                            Google Drive.</span>
                                     </div>
                                 </div>
                             </div>
@@ -146,21 +165,33 @@
                         <div class="input-group">
                             <div class="label-wrapper">
                                 <label for="appsScriptUrl">URL de tu Aplicación Web de Google Apps Script</label>
-                                <span class="tooltip-trigger" data-tooltip="Pega la URL de implementación de la Aplicación Web de Google Apps Script. Si la dejas en blanco, la app funcionará en el 'Modo Simulación local' para pruebas.">?</span>
+                                <span class="tooltip-trigger"
+                                    data-tooltip="Pega la URL de implementación de la Aplicación Web de Google Apps Script. Si la dejas en blanco, la app funcionará en el 'Modo Simulación local' para pruebas.">?</span>
                             </div>
-                            <input type="url" id="appsScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                            <input type="url" id="appsScriptUrl"
+                                placeholder="https://script.google.com/macros/s/.../exec">
                         </div>
 
                         <div class="backend-instructions">
                             <p class="instructions-title">🔑 ¿De dónde obtengo esta URL?</p>
                             <ol class="instructions-list">
-                                <li>Ve a <a href="https://script.google.com" target="_blank" rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con tu correo de Gmail.</li>
-                                <li>Crea un <strong>Nuevo Proyecto</strong> y pega el código que se encuentra en el archivo <code>Code.gs</code>. <button type="button" id="openCodeGsBtn" class="btn-link-inline">Ver Código Code.gs</button></li>
-                                <li>Haz clic en el botón azul <strong>Implementar (Deploy)</strong> &gt; <strong>Nueva implementación</strong> (esquina superior derecha).</li>
-                                <li>Selecciona tipo <strong>Aplicación Web</strong>, configúrala como <em>"Ejecutar como: Yo"</em> y <em>"Quién tiene acceso: Cualquier persona"</em>, y haz clic en <strong>Implementar</strong>.</li>
-                                <li><strong>Copia la URL larga generada</strong> (que empieza con <code>https://script.google.com/...</code>) y pégala en el campo de arriba.</li>
+                                <li>Ve a <a href="https://script.google.com" target="_blank"
+                                        rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con tu
+                                    correo de Gmail.</li>
+                                <li>Crea un <strong>Nuevo Proyecto</strong> y pega el código que se encuentra en el
+                                    archivo <code>Code.gs</code>. <button type="button" id="openCodeGsBtn"
+                                        class="btn-link-inline">Ver Código Code.gs</button></li>
+                                <li>Haz clic en el botón azul <strong>Implementar (Deploy)</strong> &gt; <strong>Nueva
+                                        implementación</strong> (esquina superior derecha).</li>
+                                <li>Selecciona tipo <strong>Aplicación Web</strong>, configúrala como <em>"Ejecutar
+                                        como: Yo"</em> y <em>"Quién tiene acceso: Cualquier persona"</em>, y haz clic en
+                                    <strong>Implementar</strong>.</li>
+                                <li><strong>Copia la URL larga generada</strong> (que empieza con
+                                    <code>https://script.google.com/...</code>) y pégala en el campo de arriba.</li>
                             </ol>
-                            <p class="instructions-note">💡 <em>¿Primera vez? Haz clic en el botón <strong>"Centro de Ayuda"</strong> (arriba a la derecha) para abrir la guía paso a paso con explicaciones detalladas y capturas de pantalla simuladas.</em></p>
+                            <p class="instructions-note">💡 <em>¿Primera vez? Haz clic en el botón <strong>"Centro de
+                                        Ayuda"</strong> (arriba a la derecha) para abrir la guía paso a paso con
+                                    explicaciones detalladas y capturas de pantalla simuladas.</em></p>
                         </div>
 
                         <div class="form-actions">
@@ -234,7 +265,8 @@
                             </thead>
                             <tbody id="historyList">
                                 <tr id="noHistoryRow">
-                                    <td colspan="6" class="text-center text-muted">Aún no hay registros de ejecuciones. Inicia un procesamiento arriba o haz una simulación.</td>
+                                    <td colspan="6" class="text-center text-muted">Aún no hay registros de ejecuciones.
+                                        Inicia un procesamiento arriba o haz una simulación.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -266,333 +298,25 @@
             </section>
         </main>
 
-        <!-- Modal Code.gs -->
-        <div class="code-modal-overlay" id="codeGsModalOverlay"></div>
-        <div class="code-modal" id="codeGsModal">
-            <div class="code-modal-header">
-                <h2>📋 Código Google Apps Script (Code.gs)</h2>
-                <button type="button" id="closeCodeGsModal" class="btn-close-modal" aria-label="Cerrar modal">×</button>
+        <!-- Modal Code.gs (nativo <dialog>, sin overlays manuales) -->
+        <dialog id="codeGsDialog" class="code-dialog">
+            <div class="code-dialog-header">
+                <h2>Code.gs — pegar en Apps Script</h2>
+                <button type="button" id="closeCodeGsModal" class="btn-close-modal" aria-label="Cerrar">×</button>
             </div>
-            <div class="code-modal-body">
-                <div class="code-instructions">
-                    <h3>✅ Cómo usar este código:</h3>
-                    <ol>
-                        <li>Copia todo el código que se muestra abajo (puedes usar el botón "Copiar al Portapapeles" más abajo).</li>
-                        <li>Ve a <a href="https://script.google.com" target="_blank" rel="noopener"><strong>script.google.com ↗</strong></a></li>
-                        <li>Haz clic en <strong>"Nuevo Proyecto"</strong> en la parte superior izquierda.</li>
-                        <li>Borra todo el código que viene por defecto.</li>
-                        <li>Pega el código que copiaste aquí.</li>
-                        <li>Guarda el proyecto haciendo clic en el icono de disquete 💾.</li>
-                        <li>Sigue los pasos indicados en la guía para implementar tu Aplicación Web.</li>
-                    </ol>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-filename">Code.gs</span>
-                        <button type="button" id="copyCodeBtn" class="btn-copy-code">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                            </svg>
-                            Copiar al Portapapeles
-                        </button>
-                    </div>
-                    <pre id="codeContent" class="code-content"><code>/**
- * ==========================================================================
- * DOCENTECH BACKEND - GOOGLE APPS SCRIPT (Code.gs)
- * ==========================================================================
- * Este script se aloja en Google Apps Script y se ejecuta bajo tu cuenta.
- * Es el encargado de leer tus correos de Gmail, extraer los enlaces a los
- * Google Docs de tus alumnos, consolidar la información en un solo documento
- * de Google Drive y conectarse con Gemini 1.5 Flash de forma gratuita.
- */
-
-/**
- * Función principal que procesa la petición HTTP POST enviada desde el frontend
- */
-function doPost(e) {
-  // CORS Header para permitir llamadas externas
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-  
-  try {
-    // Validar contenido recibido
-    if (!e || !e.postData || !e.postData.contents) {
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "error",
-        message: "No se recibieron datos en la petición."
-      }))
-      .setMimeType(ContentService.MimeType.JSON)
-      .setHeaders(corsHeaders);
-    }
-
-    const config = JSON.parse(e.postData.contents);
-    
-    // Ejecutar procesamiento principal
-    const result = processAssignments(config);
-    
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "success",
-      data: result
-    }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeaders(corsHeaders);
-    
-  } catch (error) {
-    Logger.log("Error en doPost: " + error.toString());
-    return ContentService.createTextOutput(JSON.stringify({
-      status: "error",
-      message: "Error interno del servidor de Google: " + error.toString()
-    }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeaders(corsHeaders);
-  }
-}
-
-/**
- * Maneja la petición preflight (OPTIONS) necesaria para la política de CORS de navegadores modernos
- */
-function doOptions(e) {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400"
-  };
-  
-  return ContentService.createTextOutput("")
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeaders(corsHeaders);
-}
-
-/**
- * Procesa la recopilación y análisis automatizado de trabajos prácticos
- */
-function processAssignments(config) {
-  // 1. Buscar los correos electrónicos en Gmail
-  // Filtramos por asunto exacto y receptor (para evitar procesar correos ajenos)
-  const searchQuery = `subject:"${config.subject}" to:(${config.teacherEmail})`;
-  const threads = GmailApp.search(searchQuery);
-  const deadlineDate = new Date(config.deadline);
-  
-  let processedCount = 0;
-  let allTextForReport = "";
-
-  // 2. Crear Documento de Recopilación (Libro de Trabajos)
-  const libroDoc = DocumentApp.create(`Libro Automático de Trabajos - ${config.subject}`);
-  const libroBody = libroDoc.getBody();
-  
-  // Dar formato inicial al Libro de Trabajos
-  libroBody.clear();
-  const titleParagraph = libroBody.appendParagraph(`Recopilación de Trabajos: ${config.subject}`);
-  titleParagraph.setHeading(DocumentApp.ParagraphHeading.HEADING1);
-  libroBody.appendParagraph(`Generado automáticamente por DocenTech el ${new Date().toLocaleDateString('es-ES')}`).setItalic(true);
-  libroBody.appendParagraph(`Fecha límite establecida: ${deadlineDate.toLocaleDateString('es-ES')}`).setBold(true);
-  libroBody.appendHorizontalRule();
-
-  // Procesar cada hilo de correo
-  threads.forEach(thread => {
-    // Tomamos el último mensaje del hilo (entrega más reciente)
-    const messages = thread.getMessages();
-    if (messages.length === 0) return;
-    
-    const msg = messages[messages.length - 1];
-    const senderRaw = msg.getFrom();
-    const studentEmail = extractEmail(senderRaw);
-    const dateSent = msg.getDate();
-    const bodyText = msg.getBody();
-    const attachments = msg.getAttachments();
-    
-    let isLate = dateSent > deadlineDate;
-    let studentText = "";
-    let statusLabel = isLate ? "⚠️ FUERA DE TÉRMINO (Atrasado)" : "✅ Entrega a tiempo";
-
-    // A. Buscar links a Google Docs compartidos por el alumno
-    const docUrlRegex = /https:\/\/docs\.google\.com\/document\/d\/([a-zA-Z0-9-_]+)/;
-    const match = bodyText.match(docUrlRegex);
-    
-    if (match) {
-      const docId = match[1];
-      try {
-        // Intentar abrir y extraer texto del Google Doc compartido
-        const studentDoc = DocumentApp.openById(docId);
-        studentText = studentDoc.getBody().getText().trim();
-      } catch (err) {
-        studentText = `[Error de Lectura: El alumno envió el enlace a su Google Doc, pero no otorgó permisos de lectura o edición al correo del docente. Por favor, solicítale permisos para acceder].`;
-      }
-    }
-
-    // B. Procesar adjuntos Word / PDF si están habilitados
-    if (attachments.length > 0) {
-      if (!config.allowDocs) {
-        studentText += `\n[Alerta de Sistema: El alumno adjuntó archivos físicos (${attachments.length}), pero tu configuración actual tiene bloqueado recibir adjuntos (Solo Google Docs). El texto de estos archivos no pudo recopilarse].`;
-      } else {
-        // En Google Apps Script nativo, parsear PDF/Word directamente requiere librerías complejas.
-        // Damos una alerta amigable sobre la conversión.
-        studentText += `\n[Alerta de Sistema: El alumno envió ${attachments.length} archivo(s) adjunto(s). Para extraer el texto de estos Word/PDF, te recomendamos convertirlos a Google Docs directamente haciendo clic derecho sobre el archivo en tu Google Drive].`;
-      }
-    }
-
-    // Si encontramos texto del alumno o se detectó actividad de entrega, procesar
-    if (studentText !== "" || match || attachments.length > 0) {
-      processedCount++;
-      
-      // Agregar al Libro de Trabajos Prácticos
-      const studentHeader = libroBody.appendParagraph(`Alumno: ${senderRaw}`);
-      studentHeader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
-      
-      libroBody.appendParagraph(`Fecha de Recepción: ${dateSent.toLocaleString('es-ES')} | Estado: ${statusLabel}`);
-      const textSection = libroBody.appendParagraph(studentText || "[El cuerpo del trabajo está vacío o falló su extracción]");
-      textSection.setIndentStart(20);
-      libroBody.appendHorizontalRule();
-      
-      // Acumular textos grupales para el reporte pedagógico de IA
-      if (studentText && !studentText.includes("[Error de Lectura")) {
-        allTextForReport += `--- TRABAJO DE: ${senderRaw} ---\n${studentText}\n\n`;
-      }
-
-      // C. Feedback individualizado usando la Inteligencia Artificial (Gemini 1.5 Flash)
-      if (config.autoFeedback && config.geminiKey && studentText && !studentText.includes("[Error de Lectura")) {
-        try {
-          const promptFeedback = `
-            Eres un profesor experto y empático. Escribe un comentario de retroalimentación constructivo, amigable y muy breve (máximo 3 líneas) dirigido directamente al estudiante basándote en su trabajo práctico.
-            
-            TRABAJO DEL ESTUDIANTE:
-            "${studentText.substring(0, 1500)}"
-            
-            Escribe exclusivamente tu comentario pedagógico directo, sin preámbulos ni introducciones.
-          `;
-          
-          const feedbackIA = llamarGemini(config.geminiKey, promptFeedback);
-          
-          // Escribir el feedback en el Libro de Trabajos también
-          const feedbackParaDoc = libroBody.appendParagraph(`🤖 Feedback IA preliminar: "${feedbackIA}"`);
-          feedbackParaDoc.setItalic(true);
-          feedbackParaDoc.setIndentStart(20);
-          
-          // Enviar correo automático de recepción con el feedback al alumno
-          if (config.autoEmail) {
-            const emailSubject = `Recepción TP: ${config.subject}`;
-            const emailBody = `Hola,\n\nHemos recibido correctamente tu entrega para "${config.subject}".\n\nEstado de la entrega: ${statusLabel}\nFecha de recepción: ${dateSent.toLocaleString('es-ES')}\n\nAquí tienes un feedback preliminar automatizado:\n"${feedbackIA}"\n\nSaludos,\nTu profesor/a.`;
-            
-            GmailApp.sendEmail(studentEmail, emailSubject, emailBody);
-          }
-        } catch (iaError) {
-          Logger.log("Error generando feedback IA para " + studentEmail + ": " + iaError.toString());
-        }
-      } else if (config.autoEmail) {
-        // Enviar email de recepción simple sin feedback
-        const emailSubject = `Recepción TP: ${config.subject}`;
-        const emailBody = `Hola,\n\nHemos recibido correctamente tu entrega para "${config.subject}".\n\nEstado de la entrega: ${statusLabel}\nFecha de recepción: ${dateSent.toLocaleString('es-ES')}\n\nSaludos,\nTu profesor/a.`;
-        
-        GmailApp.sendEmail(studentEmail, emailSubject, emailBody);
-      }
-    }
-  });
-
-  // 3. Generar el Reporte Docente IA Completo
-  let reporteUrl = "";
-  if (config.teacherReport && config.geminiKey && processedCount > 0 && allTextForReport !== "") {
-    try {
-      const promptReporte = `
-        Actúa como un experto analista pedagógico de educación. Analiza los siguientes textos correspondientes a los trabajos prácticos entregados por el grupo de alumnos para la materia/tema "${config.subject}".
-        
-        TRABAJOS DEL GRUPO:
-        ${allTextForReport.substring(0, 25000)}
-        
-        Genera un reporte estructurado y profesional que ayude al docente a entender el desempeño del grupo. Tu respuesta debe redactarse en español y contener las siguientes secciones estructuradas con títulos claros:
-        
-        1. RESUMEN PEDAGÓGICO GENERAL: Breve análisis cualitativo del nivel de comprensión general del grupo.
-        2. ANÁLISIS DE CONCEPTOS COMPRENDIDOS: Identifica las ideas fuertes y bien asimiladas por la mayoría de los estudiantes.
-        3. DIFICULTADES Y ERRORES FRECUENTES: Señala las confusiones conceptuales, vacíos o malentendidos recurrentes en los trabajos.
-        4. RECOMENDACIONES Y ACCIONABLES PARA LA CLASE: Brinda 3 sugerencias específicas sobre qué temas debería reforzar el docente en la próxima clase o actividades futuras.
-        5. LISTADO CONCEPTUAL DE COMPRENSIÓN: Un breve ranking de los temas con mayor nivel de acierto frente a los de mayor confusión.
-        
-        Utiliza un lenguaje profesional, constructivo y claro.
-      `;
-      
-      const analisisIA = llamarGemini(config.geminiKey, promptReporte);
-      
-      // Crear el documento de Reporte en Drive
-      const reporteDoc = DocumentApp.create(`Reporte IA Analítico - ${config.subject}`);
-      const reporteBody = reporteDoc.getBody();
-      reporteBody.clear();
-      
-      reporteBody.appendParagraph(`Reporte Pedagógico de IA: ${config.subject}`).setHeading(DocumentApp.ParagraphHeading.HEADING1);
-      reporteBody.appendParagraph(`Generado automáticamente por DocenTech el ${new Date().toLocaleDateString('es-ES')}`).setItalic(true);
-      reporteBody.appendParagraph(`Este reporte consolida el análisis cualitativo del grupo de estudiantes basado en ${processedCount} trabajos procesados exitosamente.`).setBold(true);
-      reporteBody.appendHorizontalRule();
-      
-      reporteBody.appendParagraph(analisisIA);
-      
-      reporteUrl = reporteDoc.getUrl();
-    } catch (reporteError) {
-      Logger.log("Error generando reporte general con Gemini: " + reporteError.toString());
-    }
-  }
-
-  // Devolver resultados consolidados
-  return {
-    processedCount: processedCount,
-    libroUrl: libroDoc.getUrl(),
-    reporteUrl: reporteUrl
-  };
-}
-
-/**
- * Conexión directa y simplificada con la API oficial de Gemini 1.5 Flash
- */
-function llamarGemini(apiKey, prompt) {
-  // Endpoint de Gemini 1.5 Flash
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  
-  // Estructura del cuerpo de petición requerido por la API de Google
-  const payload = {
-    contents: [{
-      parts: [{ text: prompt }]
-    }]
-  };
-
-  const options = {
-    method: "post",
-    contentType: "application/json",
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  };
-
-  const response = UrlFetchApp.fetch(url, options);
-  const responseCode = response.getResponseCode();
-  const contentText = response.getContentText();
-  const json = JSON.parse(contentText);
-  
-  if (responseCode !== 200) {
-    throw new Error(`API de Gemini retornó error (Código ${responseCode}): ${contentText}`);
-  }
-  
-  try {
-    return json.candidates[0].content.parts[0].text;
-  } catch (e) {
-    throw new Error("Estructura de respuesta inválida de Gemini: " + contentText);
-  }
-}
-
-/**
- * Utilidad para extraer únicamente la dirección de correo limpia
- * Ej: "Juan Pérez <juan.perez@gmail.com>" -> "juan.perez@gmail.com"
- */
-function extractEmail(string) {
-  const match = string.match(/<(.+)>/);
-  return match ? match[1] : string;
-}</code></pre>
-                </div>
-                <div class="code-footer">
-                    <p class="tip">💡 <strong>Tip:</strong> Este código se ejecuta únicamente en tu cuenta de Google. No se almacena en servidores externos.</p>
-                </div>
+            <p class="code-dialog-hint">
+                1. Copiá todo el código · 2. Pegalo en
+                <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> ·
+                3. Implementar → Aplicación Web → pegá la URL arriba en el formulario.
+            </p>
+            <textarea id="codeGsSource" class="code-source" readonly spellcheck="false"
+                aria-label="Código Google Apps Script"></textarea>
+            <div class="code-dialog-actions">
+                <button type="button" id="copyCodeBtn" class="btn-copy-code">Copiar código</button>
+                <a href="https://github.com/juanmrosas88/DocenTech---Automatizaci-n-de-TP/blob/main/Code.gs"
+                    target="_blank" rel="noopener" class="code-dialog-github">Ver en GitHub ↗</a>
             </div>
-        </div>
+        </dialog>
 
         <!-- Descripción e Instrucciones Rápidas a Pie de Página -->
         <section class="about-section card">
@@ -602,35 +326,47 @@ function extractEmail(string) {
             </div>
             <div class="about-body">
                 <p class="about-intro">
-                    <strong>DocenTech Workspace</strong> es una plataforma web 100% gratuita y privada que automatiza el proceso de recepción, organización y corrección preliminar de Trabajos Prácticos (TP). Su objetivo es liberar a los docentes de horas de administración manual utilizando la potencia de la Inteligencia Artificial sin costos adicionales.
+                    <strong>DocenTech Workspace</strong> es una plataforma web 100% gratuita y privada que automatiza el
+                    proceso de recepción, organización y corrección preliminar de Trabajos Prácticos (TP). Su objetivo
+                    es liberar a los docentes de horas de administración manual utilizando la potencia de la
+                    Inteligencia Artificial sin costos adicionales.
                 </p>
                 <div class="about-steps-grid">
                     <div class="about-step-card">
                         <div class="step-num-badge">1</div>
                         <h3>Pídeles el Asunto</h3>
-                        <p>Tus alumnos te envían sus trabajos por correo compartiendo su enlace de Google Doc. Solo deben escribir en el asunto la frase exacta de tu materia (ej: <code>TP1 Historia</code>).</p>
+                        <p>Tus alumnos te envían sus trabajos por correo compartiendo su enlace de Google Doc. Solo
+                            deben escribir en el asunto la frase exacta de tu materia (ej: <code>TP1 Historia</code>).
+                        </p>
                     </div>
-                    
+
                     <div class="about-step-card">
                         <div class="step-num-badge">2</div>
                         <h3>Configura y Ejecuta</h3>
-                        <p>Escribe en el formulario tu correo de recepción, el asunto esperado, tu API Key gratuita de Gemini y el enlace de Apps Script. Luego, haz clic en <strong>Iniciar Procesamiento</strong>.</p>
+                        <p>Escribe en el formulario tu correo de recepción, el asunto esperado, tu API Key gratuita de
+                            Gemini y el enlace de Apps Script. Luego, haz clic en <strong>Iniciar
+                                Procesamiento</strong>.</p>
                     </div>
-                    
+
                     <div class="about-step-card">
                         <div class="step-num-badge">3</div>
                         <h3>Revisa los Reportes</h3>
-                        <p>El sistema generará automáticamente en tu Google Drive el <strong>Libro de Trabajos Consolidados</strong> y un completo **Reporte Pedagógico de IA** detallando errores comunes de tu grupo.</p>
+                        <p>El sistema generará automáticamente en tu Google Drive el <strong>Libro de Trabajos
+                                Consolidados</strong> y un completo **Reporte Pedagógico de IA** detallando errores
+                            comunes de tu grupo.</p>
                     </div>
                 </div>
                 <div class="about-footer-note">
-                    <p>🔒 <strong>Privacidad del Estudiante:</strong> Los datos se procesan local y directamente en tu cuenta personal de Google (Gmail, Drive y Gemini API). Nada viaja a servidores externos, garantizando el cumplimiento de las normativas de datos educativos.</p>
+                    <p>🔒 <strong>Privacidad del Estudiante:</strong> Los datos se procesan local y directamente en tu
+                        cuenta personal de Google (Gmail, Drive y Gemini API). Nada viaja a servidores externos,
+                        garantizando el cumplimiento de las normativas de datos educativos.</p>
                 </div>
             </div>
         </section>
 
         <footer class="app-footer-bar">
-            <p>&copy; 2026 DocenTech. Desarrollado con ❤️ para empoderar la educación pública y privada con IA sin costos.</p>
+            <p>&copy; 2026 DocenTech. Desarrollado con ❤️ para empoderar la educación pública y privada con IA sin
+                costos.</p>
         </footer>
     </div>
 
@@ -639,65 +375,95 @@ function extractEmail(string) {
     <aside class="help-drawer" id="helpDrawer">
         <div class="drawer-header">
             <h2>📖 Centro de Ayuda y Guía de Configuración</h2>
-            <button type="button" id="closeHelpBtn" class="btn-close-drawer" aria-label="Cerrar guía de ayuda">&times;</button>
+            <button type="button" id="closeHelpBtn" class="btn-close-drawer"
+                aria-label="Cerrar guía de ayuda">&times;</button>
         </div>
         <div class="drawer-content">
-            <p class="intro">¡Hola, Docente! Esta herramienta está diseñada para ahorrarte horas de trabajo administrativo y de corrección sin costo alguno. Aquí tienes la guía completa.</p>
-            
+            <p class="intro">¡Hola, Docente! Esta herramienta está diseñada para ahorrarte horas de trabajo
+                administrativo y de corrección sin costo alguno. Aquí tienes la guía completa.</p>
+
             <section class="drawer-section">
                 <h3>🚀 ¿Cómo funciona DocenTech?</h3>
                 <ol class="step-list">
                     <li>
-                        <strong>Tus alumnos envían emails:</strong> Le pides a tus alumnos que envíen sus trabajos prácticos a tu correo y que el asunto del correo sea exactamente un código que tú elijas (ej: <code>TP1 Historia</code>). Los alumnos pueden incluir un link a su Google Doc en el email o adjuntar un archivo.
+                        <strong>Tus alumnos envían emails:</strong> Le pides a tus alumnos que envíen sus trabajos
+                        prácticos a tu correo y que el asunto del correo sea exactamente un código que tú elijas (ej:
+                        <code>TP1 Historia</code>). Los alumnos pueden incluir un link a su Google Doc en el email o
+                        adjuntar un archivo.
                     </li>
                     <li>
-                        <strong>El sistema procesa Gmail:</strong> DocenTech buscará todos los correos en tu Gmail que tengan ese asunto.
+                        <strong>El sistema procesa Gmail:</strong> DocenTech buscará todos los correos en tu Gmail que
+                        tengan ese asunto.
                     </li>
                     <li>
-                        <strong>Consolidación e IA:</strong> Copiará el texto de los trabajos, creará un <strong>"Libro de Trabajos"</strong> en tu Google Drive y le pedirá a la IA de <strong>Gemini 1.5 Flash</strong> que analice la clase para darte un reporte detallado de errores y conceptos más repetidos.
+                        <strong>Consolidación e IA:</strong> Copiará el texto de los trabajos, creará un <strong>"Libro
+                            de Trabajos"</strong> en tu Google Drive y le pedirá a la IA de <strong>Gemini 1.5
+                            Flash</strong> que analice la clase para darte un reporte detallado de errores y conceptos
+                        más repetidos.
                     </li>
                     <li>
-                        <strong>Feedback y Email Directo:</strong> Si lo activas, la IA redactará una retroalimentación de 3 líneas para el alumno y le enviará un correo automáticamente con su feedback preliminar.
+                        <strong>Feedback y Email Directo:</strong> Si lo activas, la IA redactará una retroalimentación
+                        de 3 líneas para el alumno y le enviará un correo automáticamente con su feedback preliminar.
                     </li>
                 </ol>
             </section>
 
             <section class="drawer-section">
                 <h3>💎 Paso 1: Obtener tu API Key gratuita de Gemini (1 Minuto)</h3>
-                <p>Para usar la inteligencia artificial sin pagar a intermediarios, puedes usar tu propio acceso gratuito directo de Google:</p>
+                <p>Para usar la inteligencia artificial sin pagar a intermediarios, puedes usar tu propio acceso
+                    gratuito directo de Google:</p>
                 <div class="action-card">
                     <ol>
-                        <li>Haz clic en este enlace para abrir <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener"><strong>Google AI Studio ↗</strong></a> (inicia sesión con tu cuenta de Google si es necesario).</li>
+                        <li>Haz clic en este enlace para abrir <a href="https://aistudio.google.com/app/apikey"
+                                target="_blank" rel="noopener"><strong>Google AI Studio ↗</strong></a> (inicia sesión
+                            con tu cuenta de Google si es necesario).</li>
                         <li>Haz clic en el botón azul que dice <strong>"Create API Key"</strong>.</li>
-                        <li>Selecciona tu proyecto o crea uno nuevo y haz clic en <strong>"Create API Key in existing project"</strong>.</li>
-                        <li>Copia la clave larga generada (ej: <code>AIzaSy...</code>) y pégala en el campo <strong>Gemini API Key</strong> de la web.</li>
+                        <li>Selecciona tu proyecto o crea uno nuevo y haz clic en <strong>"Create API Key in existing
+                                project"</strong>.</li>
+                        <li>Copia la clave larga generada (ej: <code>AIzaSy...</code>) y pégala en el campo
+                            <strong>Gemini API Key</strong> de la web.</li>
                     </ol>
-                    <p class="tip">💡 <strong>Privacidad</strong>: Esta clave no se almacena en ningún servidor. Se utiliza directamente en el script de tu propia cuenta de Google.</p>
+                    <p class="tip">💡 <strong>Privacidad</strong>: Esta clave no se almacena en ningún servidor. Se
+                        utiliza directamente en el script de tu propia cuenta de Google.</p>
                 </div>
             </section>
 
             <section class="drawer-section">
                 <h3>🛠️ Paso 2: Configurar Google Apps Script (2 Minutos)</h3>
-                <p>Google Apps Script es una plataforma gratuita de Google que permite ejecutar códigos para conectar tus correos con Google Docs. Sigue estos pasos:</p>
+                <p>Google Apps Script es una plataforma gratuita de Google que permite ejecutar códigos para conectar
+                    tus correos con Google Docs. Sigue estos pasos:</p>
                 <div class="action-card">
                     <ol>
-                        <li>Ve a <a href="https://script.google.com/home" target="_blank" rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con el mismo correo donde recibirás los TPs.</li>
+                        <li>Ve a <a href="https://script.google.com/home" target="_blank"
+                                rel="noopener"><strong>script.google.com ↗</strong></a> e inicia sesión con el mismo
+                            correo donde recibirás los TPs.</li>
                         <li>Haz clic en el botón <strong>"Nuevo Proyecto"</strong> en la parte superior izquierda.</li>
                         <li>Nombra el proyecto como <code>Backend DocenTech</code>.</li>
-                        <li>En el panel central, borra todo el código por defecto y pega el contenido del archivo <strong>Code.gs</strong> (puedes descargarlo o copiarlo desde tu carpeta de instalación).</li>
+                        <li>En el panel central, borra todo el código por defecto y pega el contenido del archivo
+                            <strong>Code.gs</strong> (puedes descargarlo o copiarlo desde tu carpeta de instalación).
+                        </li>
                         <li>Guarda el proyecto haciendo clic en el icono de disquete 💾.</li>
-                        <li>Haz clic en <strong>"Implementar" (Deploy)</strong> &gt; <strong>"Nueva implementación"</strong> en la esquina superior derecha.</li>
-                        <li>Selecciona el tipo de implementación haciendo clic en el engranaje ⚙️ y elige <strong>"Aplicación Web" (Web App)</strong>.</li>
+                        <li>Haz clic en <strong>"Implementar" (Deploy)</strong> &gt; <strong>"Nueva
+                                implementación"</strong> en la esquina superior derecha.</li>
+                        <li>Selecciona el tipo de implementación haciendo clic en el engranaje ⚙️ y elige
+                            <strong>"Aplicación Web" (Web App)</strong>.</li>
                         <li>Configura los campos:
                             <ul>
                                 <li><strong>Descripción:</strong> <code>v1</code></li>
-                                <li><strong>Ejecutar como:</strong> <code>Yo (tu-correo@gmail.com)</code> <span class="badge-critical">Importante</span></li>
-                                <li><strong>Quién tiene acceso:</strong> <code>Cualquier persona</code> (Esto es para que el formulario web pueda comunicarse con el script)</li>
+                                <li><strong>Ejecutar como:</strong> <code>Yo (tu-correo@gmail.com)</code> <span
+                                        class="badge-critical">Importante</span></li>
+                                <li><strong>Quién tiene acceso:</strong> <code>Cualquier persona</code> (Esto es para
+                                    que el formulario web pueda comunicarse con el script)</li>
                             </ul>
                         </li>
                         <li>Haz clic en <strong>"Implementar"</strong>.</li>
-                        <li>Google te solicitará <strong>"Autorizar acceso"</strong>. Haz clic en el botón, selecciona tu cuenta, haz clic en <strong>"Avanzado"</strong> y luego en <strong>"Ir a Backend DocenTech (no seguro)"</strong>. Otorga los permisos. (Esto es totalmente normal e indispensable para que el script pueda buscar en tu Gmail y crear documentos en tu Drive).</li>
-                        <li>Copia la <strong>URL de la Aplicación Web</strong> que te da Google al final (ej: <code>https://script.google.com/macros/s/.../exec</code>).</li>
+                        <li>Google te solicitará <strong>"Autorizar acceso"</strong>. Haz clic en el botón, selecciona
+                            tu cuenta, haz clic en <strong>"Avanzado"</strong> y luego en <strong>"Ir a Backend
+                                DocenTech (no seguro)"</strong>. Otorga los permisos. (Esto es totalmente normal e
+                            indispensable para que el script pueda buscar en tu Gmail y crear documentos en tu Drive).
+                        </li>
+                        <li>Copia la <strong>URL de la Aplicación Web</strong> que te da Google al final (ej:
+                            <code>https://script.google.com/macros/s/.../exec</code>).</li>
                         <li>Pega esa URL en el campo correspondiente en el formulario de la aplicación. ¡Listo!</li>
                     </ol>
                 </div>
@@ -707,20 +473,26 @@ function extractEmail(string) {
                 <h3>❓ Preguntas Frecuentes & Cuotas</h3>
                 <div class="faq-item">
                     <h4>¿De verdad es 100% gratis?</h4>
-                    <p>Sí, porque utilizas la infraestructura gratuita propia de tu cuenta personal de Google. No hay servidores intermediarios y no hay cargos ocultos.</p>
+                    <p>Sí, porque utilizas la infraestructura gratuita propia de tu cuenta personal de Google. No hay
+                        servidores intermediarios y no hay cargos ocultos.</p>
                 </div>
                 <div class="faq-item">
                     <h4>¿Qué pasa con la seguridad de mis datos y los de mis alumnos?</h4>
-                    <p>Los datos nunca pasan por terceros. El flujo va desde tu navegador hacia el servidor de Google Apps Script y Gemini API. Todo queda dentro de tu ecosistema personal de Google.</p>
+                    <p>Los datos nunca pasan por terceros. El flujo va desde tu navegador hacia el servidor de Google
+                        Apps Script y Gemini API. Todo queda dentro de tu ecosistema personal de Google.</p>
                 </div>
                 <div class="faq-item">
                     <h4>¿Cuántos trabajos puedo procesar?</h4>
-                    <p>En el nivel gratuito de Gmail puedes procesar hasta 100 correos al día (enviando feedback a alumnos automáticamente). Si utilizas un correo institucional educativo (@escuela.edu), la cuota se expande a 2,000 correos diarios sin costo adicional.</p>
+                    <p>En el nivel gratuito de Gmail puedes procesar hasta 100 correos al día (enviando feedback a
+                        alumnos automáticamente). Si utilizas un correo institucional educativo (@escuela.edu), la cuota
+                        se expande a 2,000 correos diarios sin costo adicional.</p>
                 </div>
             </section>
         </div>
     </aside>
 
+    <script src="code-gs-embed.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

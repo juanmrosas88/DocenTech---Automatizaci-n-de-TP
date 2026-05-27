@@ -47,7 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // State Variables
     let isProcessing = false;
 
-    // Initialize Application
+    // Code.gs modal
+    const codeGsDialog = document.getElementById('codeGsDialog');
+    const codeGsSource = document.getElementById('codeGsSource');
+    if (codeGsSource && window.DOCENTECH_CODE_GS) {
+        codeGsSource.value = window.DOCENTECH_CODE_GS;
+    }
+
     loadSavedSettings();
     renderDashboard();
     setupEventListeners();
@@ -72,9 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
         closeHelpBtn.addEventListener('click', closeHelp);
         helpOverlay.addEventListener('click', closeHelp);
 
-        // Escape Key closes Help Drawer
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && !codeGsDialog?.open) {
                 closeHelp();
             }
         });
@@ -122,71 +127,50 @@ document.addEventListener('DOMContentLoaded', () => {
             consoleUI.classList.add('hidden');
         });
 
-        // Code.gs Modal Controls
         const openCodeGsBtn = document.getElementById('openCodeGsBtn');
         const closeCodeGsModalBtn = document.getElementById('closeCodeGsModal');
-        const codeGsModal = document.getElementById('codeGsModal');
-        const codeGsModalOverlay = document.getElementById('codeGsModalOverlay');
         const copyCodeBtn = document.getElementById('copyCodeBtn');
 
-        // Open Code.gs Modal
-        if (openCodeGsBtn) {
-            openCodeGsBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                codeGsModal.classList.add('active');
-                codeGsModalOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        }
+        openCodeGsBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            codeGsDialog?.showModal();
+        });
 
-        // Close Code.gs Modal
-        const closeCodeGsModal = () => {
-            codeGsModal.classList.remove('active');
-            codeGsModalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        closeCodeGsModalBtn?.addEventListener('click', () => codeGsDialog?.close());
+
+        copyCodeBtn?.addEventListener('click', async () => {
+            const text = codeGsSource?.value || window.DOCENTECH_CODE_GS || '';
+            if (!text) {
+                alert('No hay código para copiar.');
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(text);
+                const label = copyCodeBtn.textContent;
+                copyCodeBtn.textContent = '¡Copiado!';
+                copyCodeBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyCodeBtn.textContent = label;
+                    copyCodeBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                codeGsSource?.select();
+                alert('Seleccioná el texto y usá Ctrl+C para copiar.');
+            }
+        });
+    }
+
+    function getFormConfig() {
+        return {
+            geminiKey: geminiKeyInput.value,
+            teacherEmail: teacherEmailInput.value,
+            subject: subjectInput.value,
+            deadline: deadlineInput.value,
+            allowDocs: allowDocsInput.checked,
+            autoFeedback: autoFeedbackInput.checked,
+            autoEmail: autoEmailInput.checked,
+            teacherReport: teacherReportInput.checked
         };
-
-        if (closeCodeGsModalBtn) {
-            closeCodeGsModalBtn.addEventListener('click', closeCodeGsModal);
-        }
-
-        // Close Modal when clicking on overlay
-        codeGsModalOverlay.addEventListener('click', (e) => {
-            if (e.target === codeGsModalOverlay) {
-                closeCodeGsModal();
-            }
-        });
-
-        // Close Modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && codeGsModal.classList.contains('active')) {
-                closeCodeGsModal();
-            }
-        });
-
-        // Copy Code to Clipboard
-        if (copyCodeBtn) {
-            copyCodeBtn.addEventListener('click', async () => {
-                const codeContent = document.getElementById('codeContent');
-                const codeText = codeContent.innerText || codeContent.textContent;
-
-                try {
-                    await navigator.clipboard.writeText(codeText);
-                    // Visual feedback
-                    const originalText = copyCodeBtn.innerHTML;
-                    copyCodeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> ¡Copiado!';
-                    copyCodeBtn.classList.add('copied');
-                    
-                    setTimeout(() => {
-                        copyCodeBtn.innerHTML = originalText;
-                        copyCodeBtn.classList.remove('copied');
-                    }, 2000);
-                } catch (err) {
-                    alert('Error al copiar. Por favor, intenta manualmente.');
-                    console.error('Copy failed:', err);
-                }
-            });
-        }
     }
 
     // ==========================================================================
@@ -272,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderDashboard() {
         const history = getHistory();
-        
+
         // Calculate Metrics
         const totalExecutions = history.length;
         let totalProcessed = 0;
@@ -284,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (run.status === 'Éxito') {
                 totalProcessed += (run.processedCount || 0);
                 totalEmails += (run.emailsSent || 0);
-                
+
                 if (run.deliveries) {
                     run.deliveries.forEach(del => {
                         totalDeliveriesCheckedForPunctuality++;
@@ -294,8 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const punctualityRate = totalDeliveriesCheckedForPunctuality > 0 
-            ? Math.round((punctualCount / totalDeliveriesCheckedForPunctuality) * 100) 
+        const punctualityRate = totalDeliveriesCheckedForPunctuality > 0
+            ? Math.round((punctualCount / totalDeliveriesCheckedForPunctuality) * 100)
             : 0;
 
         // Render Metric Values
@@ -314,38 +298,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         history.forEach(run => {
             const tr = document.createElement('tr');
-            
+
             const tdDate = document.createElement('td');
             tdDate.innerText = new Date(run.timestamp).toLocaleString('es-ES', {
                 day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
             });
-            
+
             const tdSubject = document.createElement('td');
             tdSubject.innerText = run.subject;
-            
+
             const tdMode = document.createElement('td');
             const modeBadge = document.createElement('span');
             modeBadge.className = `badge-mode ${run.mode.toLowerCase()}`;
             modeBadge.innerText = run.mode;
             tdMode.appendChild(modeBadge);
-            
+
             const tdCount = document.createElement('td');
             tdCount.innerText = run.status === 'Éxito' ? `${run.processedCount} trabajos` : '0';
-            
+
             const tdDocs = document.createElement('td');
             if (run.status === 'Éxito') {
                 const linksContainer = document.createElement('div');
                 linksContainer.style.display = 'flex';
                 linksContainer.style.flexDirection = 'column';
                 linksContainer.style.gap = '0.2rem';
-                
+
                 const aLibro = document.createElement('a');
                 aLibro.href = run.libroUrl;
                 aLibro.target = '_blank';
                 aLibro.className = 'link-doc';
                 aLibro.innerText = '📁 Libro de TPs';
                 linksContainer.appendChild(aLibro);
-                
+
                 if (run.reporteUrl) {
                     const aReporte = document.createElement('a');
                     aReporte.href = run.reporteUrl;
@@ -358,20 +342,20 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 tdDocs.innerText = '-';
             }
-            
+
             const tdStatus = document.createElement('td');
             const statusBadge = document.createElement('span');
             statusBadge.className = `badge-status ${run.status === 'Éxito' ? 'exito' : 'fallo'}`;
             statusBadge.innerText = run.status;
             tdStatus.appendChild(statusBadge);
-            
+
             tr.appendChild(tdDate);
             tr.appendChild(tdSubject);
             tr.appendChild(tdMode);
             tr.appendChild(tdCount);
             tr.appendChild(tdDocs);
             tr.appendChild(tdStatus);
-            
+
             historyList.appendChild(tr);
         });
     }
@@ -383,17 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setUIStateProcessing(true);
         clearLogs();
         addLog("Iniciando conexión segura con tu Google Apps Script...", "system");
-        
-        const config = {
-            geminiKey: geminiKeyInput.value,
-            teacherEmail: teacherEmailInput.value,
-            subject: subjectInput.value,
-            deadline: deadlineInput.value,
-            allowDocs: allowDocsInput.checked,
-            autoFeedback: autoFeedbackInput.checked,
-            autoEmail: autoEmailInput.checked,
-            teacherReport: teacherReportInput.checked
-        };
+
+        const config = getFormConfig();
 
         // UI progress animation
         let progressVal = 10;
@@ -425,29 +400,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             clearInterval(progressInterval);
-            
+
             if (!response.ok) {
                 throw new Error(`Código de estado HTTP: ${response.status}`);
             }
 
             const result = await response.json();
-            
+
             if (result.status === 'success') {
                 progressBar.style.width = "100%";
                 progressPercentage.innerText = "100%";
                 progressStepName.innerText = "Procesamiento finalizado";
-                
+
                 addLog(">> Conexión finalizada con éxito.", "success");
                 addLog(`Trabajos prácticos procesados con éxito: ${result.data.processedCount}`, "success");
                 addLog(`Enlace al Libro de Trabajos Consolidados: ${result.data.libroUrl}`, "success");
-                
+
                 if (config.teacherReport) {
                     addLog(`Enlace al Reporte Analítico del Docente (IA): ${result.data.reporteUrl}`, "success");
                 }
 
                 // Gather simple metadata for statistics history
                 const emailsSentCount = config.autoEmail && config.autoFeedback ? result.data.processedCount : 0;
-                
+
                 // Save execution stats to dashboard history
                 saveHistoryRecord({
                     timestamp: new Date().getTime(),
@@ -467,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 progressPercentage.innerText = "Error";
                 progressStepName.innerText = "Error en el servidor";
                 addLog(`Error retornado por Google Apps Script: ${result.message}`, "error");
-                
+
                 saveHistoryRecord({
                     timestamp: new Date().getTime(),
                     subject: config.subject,
@@ -484,10 +459,10 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.backgroundColor = "#ef4444";
             progressPercentage.innerText = "Error";
             progressStepName.innerText = "Fallo de conexión";
-            
+
             addLog(`Error de Red/Conexión: ${error.message}`, "error");
             addLog("Por favor, asegúrate de haber copiado la URL correcta de Apps Script y haberla publicado como 'Aplicación Web' accesible para 'Cualquier persona'.", "system");
-            
+
             saveHistoryRecord({
                 timestamp: new Date().getTime(),
                 subject: config.subject,
@@ -508,31 +483,20 @@ document.addEventListener('DOMContentLoaded', () => {
         setUIStateProcessing(true);
         clearLogs();
         addLog("⚙️ Iniciando modo simulación educativa local...", "system");
-        
-        const config = {
-            teacherEmail: teacherEmailInput.value || "profesor.ejemplo@escuela.edu",
-            subject: subjectInput.value || "TP1 Revolucion de Mayo",
-            deadline: deadlineInput.value,
-            allowDocs: allowDocsInput.checked,
-            autoFeedback: autoFeedbackInput.checked,
-            autoEmail: autoEmailInput.checked,
-            teacherReport: teacherReportInput.checked,
-            hasGemini: geminiKeyInput.value.trim() !== ""
-        };
 
-        const mockStudents = [
-            { name: "Juan Manuel Pérez", email: "juanma.perez@gmail.com", punctual: true, text: "La Revolución de Mayo de 1810 fue una serie de acontecimientos revolucionarios ocurridos en la ciudad de Buenos Aires, capital del Virreinato del Río de la Plata. Tuvo como consecuencia la deposición del virrey Baltasar Hidalgo de Cisneros y su reemplazo por la Primera Junta de gobierno, que no reconocía la autoridad del Consejo de Regencia español." },
-            { name: "Lucía Fernández", email: "lucia.fer99@gmail.com", punctual: true, text: "En mi opinión, las causas de la revolución de mayo se dividen en externas e internas. Las externas incluyen la invasión napoleónica a España y la prisión del rey Fernando VII, lo que creó un vacío de poder. Las internas son el descontento de los criollos con el monopolio comercial español y el deseo de tener su propio gobierno libre de España." },
-            { name: "Martín Gómez", email: "martin_gomez_tp@gmail.com", punctual: false, text: "Revolución de mayo. La Primera Junta fue el gobierno creado el 25 de mayo de 1810. Estaba integrada por Cornelio Saavedra como presidente, Mariano Moreno y Juan José Paso como secretarios. Los vocales eran Manuel Belgrano, Juan José Castelli, Miguel de Azcuénaga, Manuel Alberti, Domingo Matheu y Juan Larrea." },
-            { name: "Sofía Rodríguez", email: "sofi.rodriguez@escuela.com", punctual: true, text: "Es importante destacar que el Cabildo Abierto del 22 de mayo de 1810 fue el momento crucial de debate. Allí se votó la destitución del Virrey Cisneros. En conclusión, aunque juramos fidelidad formal al Rey cautivo Fernando VII (la famosa máscara de Fernando), la realidad es que dimos el primer paso clave hacia nuestra independencia definitiva de 1816." },
-            { name: "Mateo Bianchi", email: "mateito.b@gmail.com", punctual: true, text: "[Error de permisos: El docente no tiene acceso para ver este enlace de Google Docs]" }
-        ];
+        const base = getFormConfig();
+        const config = {
+            ...base,
+            teacherEmail: base.teacherEmail || "profesor.ejemplo@escuela.edu",
+            subject: base.subject || "TP1 Revolucion de Mayo",
+            hasGemini: base.geminiKey.trim() !== ""
+        };
 
         // Animated Sequence Timings
         let step = 0;
         progressBar.style.width = "0%";
         progressPercentage.innerText = "0%";
-        
+
         const steps = [
             {
                 pct: 10,
@@ -568,8 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 pct: 85,
                 name: "Consultando con la Inteligencia Artificial...",
-                log: config.hasGemini 
-                    ? "🤖 Conexión establecida con Gemini 1.5 Flash usando tu API Key propia." 
+                log: config.hasGemini
+                    ? "🤖 Conexión establecida con Gemini 1.5 Flash usando tu API Key propia."
                     : "🤖 Iniciando análisis heurístico con simulación de IA (Gemini gratuito sin clave)...",
                 type: "ai"
             },
@@ -602,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 progressPercentage.innerText = `${curStep.pct}%`;
                 progressStepName.innerText = curStep.name;
                 addLog(curStep.log, curStep.type);
-                
+
                 // Sub-logs for IA feedback simulation
                 if (curStep.pct === 85 && config.autoFeedback) {
                     setTimeout(() => {
@@ -617,7 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 clearInterval(simInterval);
                 setUIStateProcessing(false);
-                
+
                 // Display interactive demo links at the end
                 const dummyLibroUrl = "https://docs.google.com/document/d/1XexampleLibroTPsDemoDoc/edit";
                 const dummyReporteUrl = "https://docs.google.com/document/d/1XexampleReporteIADemoDoc/edit";
@@ -661,10 +625,10 @@ document.addEventListener('DOMContentLoaded', () => {
             statusBadge.style.borderColor = "rgba(245, 158, 11, 0.4)";
             statusBadge.querySelector('.status-indicator').style.backgroundColor = "var(--warning)";
             statusBadge.querySelector('.status-indicator').style.boxShadow = "0 0 10px var(--warning)";
-            
+
             consoleUI.classList.remove('hidden');
             consoleSpinner.style.display = "block";
-            
+
             // Reset Progress UI
             progressBar.style.width = "0%";
             progressBar.style.backgroundColor = ""; // reset error coloring
@@ -689,17 +653,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function addLog(message, type = "normal") {
         const p = document.createElement('p');
         p.className = `log-line ${type}`;
-        
+
         // Add time timestamp
         const time = new Date().toLocaleTimeString('es-ES', {
             hour: '2-digit', minute: '2-digit', second: '2-digit'
         });
-        
+
         // Formulate printable string
         p.innerText = `[${time}] ${message}`;
         logsContainer.appendChild(p);
-        
+
         // Auto scroll terminal to the bottom
         logsContainer.scrollTop = logsContainer.scrollHeight;
     }
 });
+
