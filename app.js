@@ -121,6 +121,72 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             consoleUI.classList.add('hidden');
         });
+
+        // Code.gs Modal Controls
+        const openCodeGsBtn = document.getElementById('openCodeGsBtn');
+        const closeCodeGsModalBtn = document.getElementById('closeCodeGsModal');
+        const codeGsModal = document.getElementById('codeGsModal');
+        const codeGsModalOverlay = document.getElementById('codeGsModalOverlay');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+        // Open Code.gs Modal
+        if (openCodeGsBtn) {
+            openCodeGsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                codeGsModal.classList.add('active');
+                codeGsModalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        // Close Code.gs Modal
+        const closeCodeGsModal = () => {
+            codeGsModal.classList.remove('active');
+            codeGsModalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        if (closeCodeGsModalBtn) {
+            closeCodeGsModalBtn.addEventListener('click', closeCodeGsModal);
+        }
+
+        // Close Modal when clicking on overlay
+        codeGsModalOverlay.addEventListener('click', (e) => {
+            if (e.target === codeGsModalOverlay) {
+                closeCodeGsModal();
+            }
+        });
+
+        // Close Modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && codeGsModal.classList.contains('active')) {
+                closeCodeGsModal();
+            }
+        });
+
+        // Copy Code to Clipboard
+        if (copyCodeBtn) {
+            copyCodeBtn.addEventListener('click', async () => {
+                const codeContent = document.getElementById('codeContent');
+                const codeText = codeContent.innerText || codeContent.textContent;
+
+                try {
+                    await navigator.clipboard.writeText(codeText);
+                    // Visual feedback
+                    const originalText = copyCodeBtn.innerHTML;
+                    copyCodeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> ¡Copiado!';
+                    copyCodeBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        copyCodeBtn.innerHTML = originalText;
+                        copyCodeBtn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    alert('Error al copiar. Por favor, intenta manualmente.');
+                    console.error('Copy failed:', err);
+                }
+            });
+        }
     }
 
     // ==========================================================================
