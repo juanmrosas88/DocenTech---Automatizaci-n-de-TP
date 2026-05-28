@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (progressVal > 40 && progressVal < 60) {
                     progressStepName.innerText = "Extrayendo textos y procesando adjuntos...";
                 } else if (progressVal >= 60) {
-                    progressStepName.innerText = "Llamando a Gemini 1.5 Flash (Análisis de IA)...";
+                    progressStepName.innerText = "Llamando a Gemini (análisis con IA)...";
                 }
             }
         }, 1200);
@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pct: 85,
                 name: "Consultando con la Inteligencia Artificial...",
                 log: config.hasGemini
-                    ? "🤖 Conexión establecida con Gemini 1.5 Flash usando tu API Key propia."
+                    ? "🤖 Conexión establecida con Gemini usando tu API Key propia."
                     : "🤖 Iniciando análisis heurístico con simulación de IA (Gemini gratuito sin clave)...",
                 type: "ai"
             },

@@ -39,7 +39,7 @@ Este repositorio demuestra habilidades completas en:
 - Lectura de textos desde enlaces compartidos de Google Docs.
 - Creación de documentos de trabajo y reportes en Google Drive.
 - Envío opcional de feedback automático por email.
-- Integración con Gemini 1.5 Flash para feedback individual y reporte grupal.
+- Integración con Gemini (2.5 Flash y respaldos) para feedback individual y reporte grupal.
 
 ### Privacidad y seguridad
 - La aplicación no guarda datos de estudiantes en servidores externos.

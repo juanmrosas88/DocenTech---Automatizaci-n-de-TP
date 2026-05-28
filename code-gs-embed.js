@@ -6,7 +6,7 @@ window.DOCENTECH_CODE_GS = `/**
  * Este script se aloja en Google Apps Script y se ejecuta bajo tu cuenta.
  * Es el encargado de leer tus correos de Gmail, extraer los enlaces a los
  * Google Docs de tus alumnos, consolidar la información en un solo documento
- * de Google Drive y conectarse con Gemini 1.5 Flash de forma gratuita.
+ * de Google Drive y conectarse con Gemini (API) de forma gratuita.
  */
 
 function doPost(e) {
@@ -148,7 +148,7 @@ function processAssignments(config) {
         allTextForReport += \`--- TRABAJO DE: \${senderRaw} ---\\n\${studentText}\\n\\n\`;
       }
 
-      // C. Feedback individualizado usando la Inteligencia Artificial (Gemini 1.5 Flash)
+      // C. Feedback individualizado con Gemini IA
       if (config.autoFeedback && config.geminiKey && studentText && !studentText.includes("[Error de Lectura")) {
         try {
           const promptFeedback = \`
@@ -202,7 +202,7 @@ function processAssignments(config) {
       // 1. Construir prompt con el tag '-latest' mapeado arriba
       const promptPedagogico = "Actúa como un asesor pedagógico experto. Analiza el siguiente documento que consolida los Trabajos Prácticos de los alumnos bajo el asunto '" + config.subject + "'. Genera un reporte ejecutivo para el docente que incluya: 1- Errores conceptuales recurrentes encontrados, 2- Alumnos que requieren apoyo urgente, 3- Sugerencias metodológicas para la próxima clase.\\n\\nAquí está el contenido consolidado:\\n" + allTextForReport;
       
-      // 2. Llamada a la API de Gemini (Usa el endpoint corregido con -latest)
+      // 2. Llamada a la API de Gemini (modelos 2.5 / 3.5 con fallback)
       const analisisIA = llamarGemini(config.geminiKey, promptPedagogico);
       
       // 3. Crear el documento físico del reporte exitoso
@@ -225,38 +225,64 @@ function processAssignments(config) {
   };
 }
 
+/** Modelos vigentes (1.5 está dado de baja). Se prueba en orden hasta uno disponible. */
+var GEMINI_MODEL_FALLBACKS = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-2.0-flash'];
+
 /**
- * Conexión directa y simplificada con la API oficial de Gemini 1.5 Flash
+ * Llama a la API de Gemini (generateContent) con fallback entre modelos.
  */
 function llamarGemini(apiKey, prompt) {
-  const url = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=\${apiKey}\`;
-  // Estructura del cuerpo de petición requerido por la API de Google
-  const payload = {
+  var lastError = null;
+
+  for (var i = 0; i < GEMINI_MODEL_FALLBACKS.length; i++) {
+    try {
+      return llamarGeminiConModelo(apiKey, prompt, GEMINI_MODEL_FALLBACKS[i]);
+    } catch (err) {
+      lastError = err;
+      var msg = err.toString();
+      var isModelNotFound = msg.indexOf('404') !== -1 || msg.indexOf('NOT_FOUND') !== -1;
+      if (!isModelNotFound) {
+        throw err;
+      }
+    }
+  }
+
+  throw lastError || new Error('No hay ningún modelo Gemini disponible para tu API Key.');
+}
+
+function llamarGeminiConModelo(apiKey, prompt, modelId) {
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + modelId + ':generateContent?key=' + apiKey;
+  var payload = {
     contents: [{
       parts: [{ text: prompt }]
     }]
   };
 
-  const options = {
-    method: "post",
-    contentType: "application/json",
+  var response = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
     payload: JSON.stringify(payload),
     muteHttpExceptions: true
-  };
+  });
 
-  const response = UrlFetchApp.fetch(url, options);
-  const responseCode = response.getResponseCode();
-  const contentText = response.getContentText();
-  const json = JSON.parse(contentText);
-  
-  if (responseCode !== 200) {
-    throw new Error(\`API de Gemini retornó error (Código \${responseCode}): \${contentText}\`);
+  var responseCode = response.getResponseCode();
+  var contentText = response.getContentText();
+  var json;
+
+  try {
+    json = JSON.parse(contentText);
+  } catch (parseErr) {
+    throw new Error('Respuesta no válida de Gemini (' + modelId + '): ' + contentText);
   }
-  
+
+  if (responseCode !== 200) {
+    throw new Error('API de Gemini [' + modelId + '] error (' + responseCode + '): ' + contentText);
+  }
+
   try {
     return json.candidates[0].content.parts[0].text;
   } catch (e) {
-    throw new Error("Estructura de respuesta inválida de Gemini: " + contentText);
+    throw new Error('Estructura de respuesta inválida de Gemini (' + modelId + '): ' + contentText);
   }
 }
 
