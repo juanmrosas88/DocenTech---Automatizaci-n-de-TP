@@ -73,6 +73,17 @@ function processAssignments(config) {
   
   let processedCount = 0;
   let allTextForReport = "";
+  let consignaText = "";
+  let consignaWarning = null;
+
+  try {
+    consignaText = resolveConsignaText(config);
+  } catch (e) {
+    consignaWarning = e.toString();
+    consignaText = "";
+  }
+
+  const consignaPromptBlock = buildConsignaPromptBlock(consignaText);
 
   // 2. Crear Documento de Recopilación (Libro de Trabajos)
   const libroDoc = DocumentApp.create(`Libro Automático de Trabajos - ${config.subject}`);
@@ -152,6 +163,8 @@ function processAssignments(config) {
         try {
           const promptFeedback = `
             Eres un profesor experto y empático. Escribe un comentario de retroalimentación constructivo, amigable y muy breve (máximo 3 líneas) dirigido directamente al estudiante basándote en su trabajo práctico.
+
+            ${consignaPromptBlock}
             
             TRABAJO DEL ESTUDIANTE:
             "${studentText.substring(0, 1500)}"
@@ -198,8 +211,13 @@ function processAssignments(config) {
         throw new Error("No se extrajo texto válido de los trabajos de los alumnos para analizar.");
       }
 
-      // 1. Construir prompt con el tag '-latest' mapeado arriba
-      const promptPedagogico = "Actúa como un asesor pedagógico experto. Analiza el siguiente documento que consolida los Trabajos Prácticos de los alumnos bajo el asunto '" + config.subject + "'. Genera un reporte ejecutivo para el docente que incluya: 1- Errores conceptuales recurrentes encontrados, 2- Alumnos que requieren apoyo urgente, 3- Sugerencias metodológicas para la próxima clase.\n\nAquí está el contenido consolidado:\n" + allTextForReport;
+      const promptPedagogico =
+        "Actúa como un asesor pedagógico experto. Analiza el siguiente documento que consolida los Trabajos Prácticos de los alumnos bajo el asunto '" +
+        config.subject +
+        "'. Genera un reporte ejecutivo para el docente que incluya: 1- Errores conceptuales recurrentes encontrados, 2- Alumnos que requieren apoyo urgente, 3- Sugerencias metodológicas para la próxima clase.\n" +
+        consignaPromptBlock +
+        "\nAquí está el contenido consolidado:\n" +
+        allTextForReport;
       
       // 2. Llamada a la API de Gemini (modelos 2.5 / 3.5 con fallback)
       const analisisIA = llamarGemini(config.geminiKey, promptPedagogico);
@@ -220,7 +238,9 @@ function processAssignments(config) {
     processedCount: processedCount,
     libroUrl: libroDoc.getUrl(),
     reporteUrl: reporteUrl,
-    reporteError: reporteErrorLog 
+    reporteError: reporteErrorLog,
+    consignaUsada: !!(consignaText && consignaText.trim()),
+    consignaWarning: consignaWarning
   };
 }
 
@@ -292,4 +312,44 @@ function llamarGeminiConModelo(apiKey, prompt, modelId) {
 function extractEmail(string) {
   const match = string.match(/<(.+)>/);
   return match ? match[1] : string;
+}
+
+function resolveConsignaText(config) {
+  var parts = [];
+
+  if (config && config.consignaDocUrl) {
+    var url = String(config.consignaDocUrl).trim();
+    if (url) {
+      parts.push(extractTextFromGoogleDocUrl(url));
+    }
+  }
+
+  if (config && config.consignaText) {
+    var raw = String(config.consignaText).trim();
+    if (raw) parts.push(raw);
+  }
+
+  return parts.join('\n\n').trim();
+}
+
+function extractTextFromGoogleDocUrl(url) {
+  var match = String(url).match(/https:\/\/docs\.google\.com\/document\/d\/([a-zA-Z0-9-_]+)/);
+  if (!match) {
+    throw new Error('URL de consigna inválida. Debe ser un Google Doc (docs.google.com/document/d/...).');
+  }
+
+  var docId = match[1];
+  var doc = DocumentApp.openById(docId);
+  return doc.getBody().getText().trim();
+}
+
+function buildConsignaPromptBlock(consignaText) {
+  var txt = String(consignaText || '').trim();
+  if (!txt) return '';
+
+  return (
+    '\n\nCONSIGNA OFICIAL DEL TRABAJO:\n"""' +
+    txt.substring(0, 8000) +
+    '"""\nEvalúa cada entrega en relación directa con esta consigna.\n'
+  );
 }

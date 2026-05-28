@@ -78,6 +78,38 @@
                         </div>
                     </div>
 
+                    <!-- Consigna del Trabajo (Contexto para IA) -->
+                    <div class="card card-consigna">
+                        <div class="card-header">
+                            <span class="card-icon">🧾</span>
+                            <h2>Consigna del trabajo (opcional)</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="consignaDocUrl">Link a Google Doc con la consigna</label>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="Opcional. Si pegás el enlace de la consigna, el análisis pedagógico podrá comparar las entregas con lo que se pidió. El Doc debe estar compartido con el mismo Gmail que ejecuta el Apps Script.">?</span>
+                                </div>
+                                <input type="url" id="consignaDocUrl"
+                                    placeholder="https://docs.google.com/document/d/XXXXXXXXXXXXXXX/edit">
+                                <small class="input-help-text consigna-hint">
+                                    Si te da error de permisos, compartí el Doc con tu correo (el mismo que usás en Apps Script).
+                                </small>
+                            </div>
+
+                            <div class="input-group">
+                                <div class="label-wrapper">
+                                    <label for="consignaText">O pegá la consigna aquí (texto)</label>
+                                    <span class="tooltip-trigger"
+                                        data-tooltip="Opcional. Pegá el texto de la consigna o aclaraciones. Se usará como contexto para feedback y reporte grupal.">?</span>
+                                </div>
+                                <textarea id="consignaText" rows="4" maxlength="8000"
+                                    placeholder="Pegá aquí la consigna: objetivos, criterios, requisitos, formato de entrega, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Configuración del Cerebro IA y Filtros -->
                     <div class="card card-ai">
                         <div class="card-header">
@@ -406,6 +438,7 @@
                         de 3 líneas para el alumno y le enviará un correo automáticamente con su feedback preliminar.
                     </li>
                 </ol>
+                <p class="tip">Tip: si pegás la <strong>consigna</strong> (link a un Google Doc o texto), la IA evaluará las entregas en relación a lo que se pidió.</p>
             </section>
 
             <section class="drawer-section">

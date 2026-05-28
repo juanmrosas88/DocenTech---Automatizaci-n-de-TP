@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const autoEmailInput = document.getElementById('autoEmail');
     const teacherReportInput = document.getElementById('teacherReport');
     const geminiKeyInput = document.getElementById('geminiKey');
+    const consignaDocUrlInput = document.getElementById('consignaDocUrl');
+    const consignaTextInput = document.getElementById('consignaText');
     const toggleKeyVisibilityBtn = document.getElementById('toggleKeyVisibility');
     const statusBadge = document.getElementById('statusBadge');
     const statusText = document.getElementById('statusText');
@@ -169,7 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
             allowDocs: allowDocsInput.checked,
             autoFeedback: autoFeedbackInput.checked,
             autoEmail: autoEmailInput.checked,
-            teacherReport: teacherReportInput.checked
+            teacherReport: teacherReportInput.checked,
+            consignaDocUrl: consignaDocUrlInput?.value?.trim() || "",
+            consignaText: consignaTextInput?.value?.trim() || ""
         };
     }
 
@@ -201,7 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
             autoEmail: autoEmailInput.checked,
             teacherReport: teacherReportInput.checked,
             geminiKey: geminiKeyInput.value,
-            appsScriptUrl: appsScriptUrlInput.value
+            appsScriptUrl: appsScriptUrlInput.value,
+            consignaDocUrl: consignaDocUrlInput?.value?.trim() || "",
+            consignaText: consignaTextInput?.value?.trim() || ""
         };
         localStorage.setItem('docentech_settings', JSON.stringify(config));
     }
@@ -220,6 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 teacherReportInput.checked = config.teacherReport !== false;
                 geminiKeyInput.value = config.geminiKey || "";
                 appsScriptUrlInput.value = config.appsScriptUrl || "";
+                if (consignaDocUrlInput) consignaDocUrlInput.value = config.consignaDocUrl || "";
+                if (consignaTextInput) consignaTextInput.value = config.consignaText || "";
             } catch (err) {
                 console.error("Error loading saved settings:", err);
             }
@@ -369,6 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
         addLog("Iniciando conexión segura con tu Google Apps Script...", "system");
 
         const config = getFormConfig();
+        if (config.consignaDocUrl || config.consignaText) {
+            addLog("🧾 Consigna incluida: se usará como contexto para el análisis pedagógico.", "info");
+        }
 
         // UI progress animation
         let progressVal = 10;
@@ -415,6 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 addLog(">> Conexión finalizada con éxito.", "success");
                 addLog(`Trabajos prácticos procesados con éxito: ${result.data.processedCount}`, "success");
                 addLog(`Enlace al Libro de Trabajos Consolidados: ${result.data.libroUrl}`, "success");
+                logConsignaResult(result.data, config);
                 logReporteResult(result.data, config);
 
                 const emailsSentCount = config.autoEmail && config.autoFeedback ? result.data.processedCount : 0;
@@ -655,6 +667,25 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => {
             consoleUI.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
+    }
+
+    function logConsignaResult(data, config) {
+        const sentByUser = !!(config.consignaDocUrl || config.consignaText);
+        const usedByBackend = !!data.consignaUsada;
+
+        if (!sentByUser && !usedByBackend) return;
+
+        if (data.consignaWarning) {
+            addLog('⚠️ La consigna no pudo leerse desde el link configurado. Se continuará sin consigna.', 'warning');
+            addLog(`Detalle: "${data.consignaWarning}"`, 'warning');
+            return;
+        }
+
+        if (usedByBackend) {
+            addLog('🧾 Consigna aplicada al análisis pedagógico.', 'success');
+        } else if (sentByUser) {
+            addLog('ℹ️ Se envió consigna, pero no se pudo aplicar en el análisis (por ejemplo, link vacío o sin permisos).', 'info');
+        }
     }
 
     function logReporteResult(data, config) {

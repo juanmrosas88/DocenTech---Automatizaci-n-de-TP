@@ -238,7 +238,8 @@ body {
 .input-group input[type="text"],
 .input-group input[type="date"],
 .input-group input[type="url"],
-.input-group input[type="password"] {
+.input-group input[type="password"],
+.input-group textarea {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-color);
     padding: 0.85rem 1rem;
@@ -254,6 +255,22 @@ body {
     border-color: var(--primary);
     box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
     background: rgba(255, 255, 255, 0.05);
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.45;
+}
+
+.input-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.consigna-hint {
+    margin-top: 0.4rem;
 }
 
 .password-input-wrapper {
